@@ -18,13 +18,12 @@ class MainFrame extends JPanel {
                 gridBagConstraints.gridy = row;
 
                 Field panel = new Field(fieldSize, Color.WHITE);
-                if (row == DIM / 2 && col == DIM / 2)
-                    panel.setImage("stickman.png");
-                else if (random.nextBoolean())
-                    panel.setImage("trees.png");
+                if (random.nextBoolean())
+                    panel.setBackgroundImage("images/trees.png");
                 else
-                    panel.setImage("water.png");
-
+                    panel.setBackgroundImage("images/water.png");
+                if (row == DIM / 2 && col == DIM / 2)
+                    panel.setPlayer();
                 Border border;
                 if (row < DIM - 1) {
                     if (col < DIM - 1) {
