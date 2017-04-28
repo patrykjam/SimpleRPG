@@ -1,3 +1,5 @@
+package pl.edu.uj.wzorce;
+
 import javax.swing.*;
 
 public class Main {

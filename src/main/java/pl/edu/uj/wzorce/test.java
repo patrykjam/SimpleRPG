@@ -1,4 +1,4 @@
-import sun.awt.windows.ThemeReader;
+package pl.edu.uj.wzorce;
 
 import java.sql.Connection;
 
