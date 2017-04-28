@@ -21,7 +21,7 @@ class Field extends JPanel {
 
     void setPlayer() {
         try {
-            bufferedImage = ImageIO.read(new File("images/stickman.png"));
+            bufferedImage = ImageIO.read(new File(getClass().getResource("/images/stickman.png").getPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }

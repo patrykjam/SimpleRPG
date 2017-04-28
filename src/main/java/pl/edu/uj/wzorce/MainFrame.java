@@ -20,10 +20,11 @@ class MainFrame extends JPanel {
                 gridBagConstraints.gridy = row;
 
                 Field panel = new Field(fieldSize, Color.WHITE);
-                if (random.nextBoolean())
-                    panel.setBackgroundImage("images/trees.png");
-                else
-                    panel.setBackgroundImage("images/water.png");
+                if (random.nextBoolean()) {
+                    panel.setBackgroundImage(getClass().getResource("/images/trees.png").getPath());
+                } else {
+                    panel.setBackgroundImage(getClass().getResource("/images/water.png").getPath());
+                }
                 if (row == DIM / 2 && col == DIM / 2)
                     panel.setPlayer();
                 Border border;
