@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.io.IOException;
 import java.util.Random;
 
 class MainFrame extends JPanel {
@@ -20,10 +21,11 @@ class MainFrame extends JPanel {
                 gridBagConstraints.gridy = row;
 
                 Field panel = new Field(fieldSize, Color.WHITE);
+                System.out.println(getClass().getResource("/images/trees.png").getFile());
                 if (random.nextBoolean()) {
-                    panel.setBackgroundImage(getClass().getResource("/images/trees.png").getPath());
+                    panel.setBackgroundImage("images/trees.png");
                 } else {
-                    panel.setBackgroundImage(getClass().getResource("/images/water.png").getPath());
+                    panel.setBackgroundImage("images/water.png");
                 }
                 if (row == DIM / 2 && col == DIM / 2)
                     panel.setPlayer();
