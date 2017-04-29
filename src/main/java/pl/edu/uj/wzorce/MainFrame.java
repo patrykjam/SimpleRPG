@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.io.IOException;
 import java.util.Random;
 
 class MainFrame extends JPanel {
@@ -21,7 +20,6 @@ class MainFrame extends JPanel {
                 gridBagConstraints.gridy = row;
 
                 Field panel = new Field(fieldSize, Color.WHITE);
-                System.out.println(getClass().getResource("/images/trees.png").getFile());
                 if (random.nextBoolean()) {
                     panel.setBackgroundImage("images/trees.png");
                 } else {
