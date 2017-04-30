@@ -53,6 +53,7 @@ public class ConnectionPool {
         if(occupiedConnections.containsKey(connection)){
         occupiedConnections.remove(connection);
         freeConnections.add(connection);
+
         notify();}
     }
     public int getFreeConnectionNumber(){return freeConnections.size();}
@@ -62,7 +63,11 @@ public class ConnectionPool {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             for(int temp=0; temp<20; temp++)
-            freeConnections.add(DriverManager.getConnection("jdbc:mysql://localhost:3306/dzik","root", ""));
+                freeConnections.add(DriverManager.getConnection("jdbc:mysql://localhost:3306/dzik?" +
+                        "useUnicode=true" +
+                        "&useJDBCCompliantTimezoneShift=true" +
+                        "&useLegacyDatetimeCode=false" +
+                        "&serverTimezone=UTC","root", ""));
         }catch (SQLException|ClassNotFoundException e) {
             e.printStackTrace();
         }
