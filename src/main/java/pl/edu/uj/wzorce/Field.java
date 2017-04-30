@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 class Field extends JPanel {
 
@@ -20,26 +21,28 @@ class Field extends JPanel {
     }
 
     void setPlayer() {
-        try {
-            bufferedImage = ImageIO.read(new File(getClass().getResource("/images/stickman.png").getPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
+        URL resource = getClass().getClassLoader().getResource("images/stickman.png");
+        if(resource != null) {
+            Image scaled = new ImageIcon(resource).getImage()
+                    .getScaledInstance(size, size, Image.SCALE_SMOOTH);
+            ImageIcon image = new ImageIcon(scaled);
+            JLabel label = new JLabel(image);
+            setLayout(new BorderLayout());
+            add(label, BorderLayout.CENTER);
         }
-        Image scaled = bufferedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-        ImageIcon image = new ImageIcon(scaled);
-        JLabel label = new JLabel(image);
-        setLayout(new BorderLayout());
-        add(label, BorderLayout.CENTER);
     }
 
 
     void setBackgroundImage(String path) {
-        try {
-            bufferedImage = ImageIO.read(new File(path));
-        } catch (IOException e) {
-            e.printStackTrace();
+        URL resource = getClass().getClassLoader().getResource(path);
+        if(resource != null) {
+            try {
+                bufferedImage = ImageIO.read(resource);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            image = bufferedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
         }
-        image = bufferedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
     }
 
     @Override
@@ -49,6 +52,9 @@ class Field extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(image, 0, 0, null);
+        if(image != null)
+            g.drawImage(image, 0, 0, null);
+        else
+            super.paintComponent(g);
     }
 }
