@@ -5,17 +5,34 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ServerResponder extends Thread {
     Socket socket = new Socket();
+    BufferedReader input;
+    PrintWriter out;
+
+    int User_id = -1;
+    int X_Asix = 1;
+    int Y_Asix = 1;
+    List<String> equipment = new ArrayList<String>();
+    String proffesion = "";
+
     public  ServerResponder(Socket socket){this.socket=socket;}
     public void run() {
         try {
-            BufferedReader input =
-                    new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out =
-                    new PrintWriter(socket.getOutputStream(), true);
+            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out   = new PrintWriter(socket.getOutputStream(), true);
+
+            boolean flag = true;
+
+            while(flag) {
+                String question = input.readLine(); // pierwsza linia logowanie.
+            }
+
+
             while (true) {
 
                 String question = input.readLine();
