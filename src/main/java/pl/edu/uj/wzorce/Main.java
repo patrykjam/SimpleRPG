@@ -1,10 +1,16 @@
 package pl.edu.uj.wzorce;
 
+import connection_test.Fasade;
+import org.json.JSONObject;
+
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Main {
 
     public static void main(String[] args) {
+
         SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
