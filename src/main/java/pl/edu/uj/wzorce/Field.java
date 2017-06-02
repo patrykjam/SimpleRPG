@@ -4,23 +4,22 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-class Field extends JPanel {
+public class Field extends JPanel {
 
     private int size;
     private BufferedImage bufferedImage = null;
     private Image image;
 
 
-    Field(int size, Color color) {
+    public Field(int size, Color color) {
         this.size = size;
         setBackground(color);
     }
 
-    void setPlayer() {
+    public void setPlayer() {
         URL resource = getClass().getClassLoader().getResource("images/stickman.png");
         if(resource != null) {
             Image scaled = new ImageIcon(resource).getImage()
@@ -33,7 +32,7 @@ class Field extends JPanel {
     }
 
 
-    void setBackgroundImage(String path) {
+    public void setBackgroundImage(String path) {
         URL resource = getClass().getClassLoader().getResource(path);
         if(resource != null) {
             try {

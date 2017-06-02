@@ -11,7 +11,7 @@ public class Main {
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ignored) {
             }
             JFrame frame = new JFrame();
-            frame.add(new MainFrame());
+            frame.add(new MainFrame(11));
             frame.setSize(1000, 1000);
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setLocationRelativeTo(null);

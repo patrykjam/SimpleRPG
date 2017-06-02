@@ -6,16 +6,15 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.Random;
 
-class MainFrame extends JPanel {
+public class MainFrame extends JPanel {
 
-    MainFrame() {
-        int DIM = 17;
-        int fieldSize = 40;
+    MainFrame(int dimension) {
+        int fieldSize = 80;
         Random random = new Random();
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        for (int row = 0; row < DIM; row++) {
-            for (int col = 0; col < DIM; col++) {
+        for (int row = 0; row < dimension; row++) {
+            for (int col = 0; col < dimension; col++) {
                 gridBagConstraints.gridx = col;
                 gridBagConstraints.gridy = row;
 
@@ -25,22 +24,34 @@ class MainFrame extends JPanel {
                 } else {
                     panel.setBackgroundImage("images/water.png");
                 }
-                if (row == DIM / 2 && col == DIM / 2)
+                if (row == dimension / 2 && col == dimension / 2)
                     panel.setPlayer();
                 Border border;
-                if (row < DIM - 1) {
-                    if (col < DIM - 1) {
+                if (row < dimension - 1) {
+                    if (col < dimension - 1) {
                         border = new MatteBorder(1, 1, 0, 0, Color.GRAY);
                     } else {
                         border = new MatteBorder(1, 1, 0, 1, Color.GRAY);
                     }
-                } else if (col < DIM - 1) {
+                } else if (col < dimension - 1) {
                     border = new MatteBorder(1, 1, 1, 0, Color.GRAY);
                 } else {
                     border = new MatteBorder(1, 1, 1, 1, Color.GRAY);
                 }
                 panel.setBorder(border);
                 add(panel, gridBagConstraints);
+            }
+        }
+    }
+
+    public MainFrame(Field[][] fields){
+        setLayout(new GridBagLayout());
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        for (int row = 0; row < fields.length; row++) {
+            for (int col = 0; col < fields.length; col++) {
+                gridBagConstraints.gridx = col;
+                gridBagConstraints.gridy = row;
+                add(fields[row][col], gridBagConstraints);
             }
         }
     }
