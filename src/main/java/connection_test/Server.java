@@ -11,7 +11,7 @@ public class Server {
 
     public static void main(String[] args){
             ServerSocket listener = null;
-
+            ConnectionPool.getInstance();
 
         try {
                 listener = new ServerSocket(9090);

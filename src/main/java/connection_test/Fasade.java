@@ -4,10 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONObject;
-import org.json.JSONException;
 
 
 public class Fasade {
