@@ -1,12 +1,7 @@
 package pl.edu.uj.wzorce;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.net.URL;
 
 public class Field extends JPanel {
 
@@ -21,24 +16,17 @@ public class Field extends JPanel {
     }
 
     public void setPlayer() {
-        URL resource = getClass().getClassLoader().getResource("images/stickman.png");
-        if (resource != null) {
-            Image scaled = new ImageIcon(resource).getImage()
-                    .getScaledInstance(size, size, Image.SCALE_SMOOTH);
-            ImageIcon image = new ImageIcon(scaled);
-            JLabel label = new JLabel(image);
-            setLayout(new BorderLayout());
-            add(label, BorderLayout.CENTER);
-        }
+        Image scaled = ImageCollection.getInstance().getImage("images/stickman.png", size);
+        ImageIcon image = new ImageIcon(scaled);
+        JLabel label = new JLabel(image);
+        setLayout(new BorderLayout());
+        add(label, BorderLayout.CENTER);
     }
 
 
     public void setBackgroundImage(String path) {
         imgPath = path;
-        BufferedImage bufferedImage = ImageCollection.getInstance().getBufferedImage(path);
-        if (bufferedImage != null) {
-            image = bufferedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-        }
+        image = ImageCollection.getInstance().getImage(path, size);
     }
 
     public void clearImage() {

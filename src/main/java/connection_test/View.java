@@ -1,11 +1,9 @@
 package connection_test;
 
 
-import pl.edu.uj.wzorce.Field;
 import pl.edu.uj.wzorce.MainFrame;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

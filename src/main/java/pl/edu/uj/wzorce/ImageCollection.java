@@ -1,6 +1,7 @@
 package pl.edu.uj.wzorce;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public class ImageCollection {
     public static ImageCollection instance;
-    private static Map<String, BufferedImage> imageMap;
+    private static Map<String, Image> imageMap;
 
     private ImageCollection() {
     }
@@ -22,21 +23,23 @@ public class ImageCollection {
         return instance;
     }
 
-    public BufferedImage getBufferedImage(String key) {
+    public Image getImage(String key, int size) {
+        Image scaledInstance = null;
         if (imageMap.containsKey(key)) {
             return imageMap.get(key);
         } else {
-            BufferedImage bufferedImage = null;
+            BufferedImage bufferedImage;
             URL resource = getClass().getClassLoader().getResource(key);
             if (resource != null) {
                 try {
                     bufferedImage = ImageIO.read(resource);
-                    imageMap.put(key, bufferedImage);
+                    scaledInstance = bufferedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
+                    imageMap.put(key, scaledInstance);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            return bufferedImage;
+            return scaledInstance;
         }
     }
 }
