@@ -6,8 +6,10 @@ import pl.edu.uj.wzorce.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class View extends JFrame {
+public class View extends JFrame implements KeyListener {
     private Controler controler;
     void addControler(Controler controler){this.controler = controler;}
 
@@ -25,9 +27,56 @@ public class View extends JFrame {
             setSize(1000, 1000);
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             setLocationRelativeTo(null);
+            addKeyListener(this);
             setVisible(true);
         });
 
     }
 
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+        switch(keyEvent.getKeyChar()){
+            case 'w':
+            case 'W':
+                controler.moveUp();
+                break;
+            case 'a':
+            case 'A':
+                controler.moveLeft();
+                break;
+            case 's':
+            case 'S':
+                controler.moveDown();
+                break;
+            case 'd':
+            case 'D':
+                controler.moveRight();
+        }
+        switch(keyEvent.getKeyCode()){
+            case 37:
+                controler.moveLeft();
+                break;
+            case 38:
+                controler.moveUp();
+                break;
+            case 39:
+                controler.moveRight();
+                break;
+            case 40:
+                controler.moveDown();
+                break;
+
+        }
+    }
 }

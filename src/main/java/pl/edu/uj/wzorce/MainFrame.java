@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
 public class MainFrame extends JPanel {

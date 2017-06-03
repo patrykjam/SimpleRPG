@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Random;
 
 public class Controler {
     Model model;
@@ -52,7 +53,13 @@ public class Controler {
             for (int j = 0; j < dimension; j++) {
 
                 fields[i][j] = new Field(fieldSize, Color.WHITE);
-                fields[i][j].setBackgroundImage("images/trees.png");
+//                fields[i][j].setBackgroundImage("images/trees.png");
+                Random random = new Random();
+                if (random.nextBoolean()) {
+                    fields[i][j].setBackgroundImage("images/trees.png");
+                } else {
+                    fields[i][j].setBackgroundImage("images/water.png");
+                }
 
                 if (i == dimension / 2 && j == dimension / 2)
                     fields[i][j].setPlayer();
@@ -79,6 +86,31 @@ public class Controler {
             model.setMainFrame(new MainFrame(model.getFields()));
         view.showFrame(model.getMainFrame());
     }
+
+    public void moveUp(){
+        //TODO: sprawdzic czy mozna ruszyc sie dana strone
+        model.moveUp();
+
+    }
+
+    public void moveLeft(){
+        model.moveLeft();
+
+
+    }
+
+    public void moveRight(){
+        model.moveRight();
+
+
+    }
+
+    public void moveDown(){
+        model.moveDown();
+
+
+    }
+
 
 
 }

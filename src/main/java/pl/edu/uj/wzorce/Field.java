@@ -4,14 +4,15 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
 
 public class Field extends JPanel {
 
     private int size;
-    private BufferedImage bufferedImage = null;
     private Image image;
+    private String imgPath;
 
 
     public Field(int size, Color color) {
@@ -21,7 +22,7 @@ public class Field extends JPanel {
 
     public void setPlayer() {
         URL resource = getClass().getClassLoader().getResource("images/stickman.png");
-        if(resource != null) {
+        if (resource != null) {
             Image scaled = new ImageIcon(resource).getImage()
                     .getScaledInstance(size, size, Image.SCALE_SMOOTH);
             ImageIcon image = new ImageIcon(scaled);
@@ -33,15 +34,16 @@ public class Field extends JPanel {
 
 
     public void setBackgroundImage(String path) {
-        URL resource = getClass().getClassLoader().getResource(path);
-        if(resource != null) {
-            try {
-                bufferedImage = ImageIO.read(resource);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        imgPath = path;
+        BufferedImage bufferedImage = ImageCollection.getInstance().getBufferedImage(path);
+        if (bufferedImage != null) {
             image = bufferedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
         }
+    }
+
+    public void clearImage() {
+        imgPath = null;
+        image = null;
     }
 
     @Override
@@ -51,9 +53,21 @@ public class Field extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        if(image != null)
+        if (image != null)
             g.drawImage(image, 0, 0, null);
         else
             super.paintComponent(g);
+    }
+
+    public void copyFrom(Field field) {
+        if (field.imgPath != null)
+            this.setBackgroundImage(field.imgPath);
+        else
+            this.clearImage();
+
+        //TODO: copy
+
+//        this.repaint();
+
     }
 }
