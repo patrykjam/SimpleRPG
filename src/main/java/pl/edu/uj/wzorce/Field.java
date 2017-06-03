@@ -1,5 +1,7 @@
 package pl.edu.uj.wzorce;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,7 +9,8 @@ public class Field extends JPanel {
 
     private int size;
     private Image image;
-    private String imgPath;
+    private FIELD_TYPE fieldType;
+    private JLabel label;
 
 
     public Field(int size, Color color) {
@@ -15,22 +18,30 @@ public class Field extends JPanel {
         setBackground(color);
     }
 
-    public void setPlayer() {
-        Image scaled = ImageCollection.getInstance().getImage("images/stickman.png", size);
+    public void setPlayer(Player player, String direction) {
+        if(label != null)
+            remove(label);
+        Image scaled = ImageCollection.getInstance()
+                .getImage("images/" + player.getPLAYER_CLASS() + direction + ".png", size);
         ImageIcon image = new ImageIcon(scaled);
-        JLabel label = new JLabel(image);
+        label = new JLabel(image);
         setLayout(new BorderLayout());
         add(label, BorderLayout.CENTER);
+        repaint();
     }
 
 
-    public void setBackgroundImage(String path) {
-        imgPath = path;
-        image = ImageCollection.getInstance().getImage(path, size);
+    public void setFieldType(FIELD_TYPE fieldType){
+        this.fieldType = fieldType;
+        setBackgroundImage(fieldType);
+    }
+
+    private void setBackgroundImage(@NotNull FIELD_TYPE fieldType) {
+        image = ImageCollection.getInstance().getImage(FIELD_TYPE.getPath(fieldType), size);
     }
 
     public void clearImage() {
-        imgPath = null;
+        fieldType = null;
         image = null;
     }
 
@@ -48,14 +59,11 @@ public class Field extends JPanel {
     }
 
     public void copyFrom(Field field) {
-        if (field.imgPath != null)
-            this.setBackgroundImage(field.imgPath);
-        else
+        if (field.fieldType != null) {
+            this.setFieldType(field.fieldType);
+        } else
             this.clearImage();
 
         //TODO: copy
-
-//        this.repaint();
-
     }
 }

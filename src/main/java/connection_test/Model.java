@@ -2,11 +2,13 @@ package connection_test;
 
 import pl.edu.uj.wzorce.Field;
 import pl.edu.uj.wzorce.MainFrame;
+import pl.edu.uj.wzorce.Player;
 
 public class Model {
 
     private Field[][] fields;
     private MainFrame mainFrame;
+    private Player player;
     int X_;
     int Y_;
 
@@ -29,7 +31,19 @@ public class Model {
         this.mainFrame = mainFrame;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player, String direction) {
+        this.player = player;
+        if (fields != null) {
+            fields[fields.length / 2][fields.length / 2].setPlayer(player, direction);
+        }
+    }
+
     public void moveUp() {
+        setPlayer(player, "up");
         for (int i = fields.length - 1; i > 0; i--) {
             for (int j = 0; j < fields.length; j++) {
                 fields[i][j].copyFrom(fields[i - 1][j]);
@@ -49,6 +63,7 @@ public class Model {
     }
 
     public void moveLeft() {
+        setPlayer(player, "left");
         for (int i = 0; i < fields.length; i++) {
             for (int j = fields.length - 1; j > 0; j--) {
                 fields[i][j].copyFrom(fields[i][j - 1]);
@@ -68,6 +83,7 @@ public class Model {
     }
 
     public void moveRight() {
+        setPlayer(player, "right");
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields.length - 1; j++) {
                 fields[i][j].copyFrom(fields[i][j + 1]);
@@ -87,6 +103,7 @@ public class Model {
     }
 
     public void moveDown() {
+        setPlayer(player, "down");
         for (int i = 0; i < fields.length - 1; i++) {
             for (int j = 0; j < fields.length; j++) {
                 fields[i][j].copyFrom(fields[i + 1][j]);

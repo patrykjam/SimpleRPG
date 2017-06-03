@@ -20,12 +20,12 @@ public class MainFrame extends JPanel {
 
                 Field panel = new Field(fieldSize, Color.WHITE);
                 if (random.nextBoolean()) {
-                    panel.setBackgroundImage("images/trees.png");
+                    panel.setFieldType(FIELD_TYPE.GRASS);
                 } else {
-                    panel.setBackgroundImage("images/water.png");
+                    panel.setFieldType(FIELD_TYPE.WATER);
                 }
-                if (row == dimension / 2 && col == dimension / 2)
-                    panel.setPlayer();
+//                if (row == dimension / 2 && col == dimension / 2)
+//                    panel.addPlayer();
                 Border border;
                 if (row < dimension - 1) {
                     if (col < dimension - 1) {

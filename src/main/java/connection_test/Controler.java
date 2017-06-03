@@ -1,8 +1,10 @@
 package connection_test;
 
 
+import pl.edu.uj.wzorce.FIELD_TYPE;
 import pl.edu.uj.wzorce.Field;
 import pl.edu.uj.wzorce.MainFrame;
+import pl.edu.uj.wzorce.Player;
 
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
@@ -56,13 +58,11 @@ public class Controler {
 //                fields[i][j].setBackgroundImage("images/trees.png");
                 Random random = new Random();
                 if (random.nextBoolean()) {
-                    fields[i][j].setBackgroundImage("images/trees.png");
+                    fields[i][j].setFieldType(FIELD_TYPE.GRASS);
                 } else {
-                    fields[i][j].setBackgroundImage("images/water.png");
+                    fields[i][j].setFieldType(FIELD_TYPE.WATER);
                 }
 
-                if (i == dimension / 2 && j == dimension / 2)
-                    fields[i][j].setPlayer();
                 Border border;
                 if (i < dimension - 1) {
                     if (j < dimension - 1) {
@@ -90,25 +90,22 @@ public class Controler {
     public void moveUp(){
         //TODO: sprawdzic czy mozna ruszyc sie dana strone
         model.moveUp();
-
     }
 
     public void moveLeft(){
         model.moveLeft();
-
-
     }
 
     public void moveRight(){
         model.moveRight();
-
-
     }
 
     public void moveDown(){
         model.moveDown();
+    }
 
-
+    public void addPlayer(Player player){
+        model.setPlayer(player, "down");
     }
 
 
