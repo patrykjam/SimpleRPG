@@ -1,8 +1,6 @@
 package pl.edu.uj.wzorce.common;
 
 
-import pl.edu.uj.wzorce.common.Player;
-
 public class Mage implements Player {
     private int MAX_HP;
     private int CURRENT_HP;

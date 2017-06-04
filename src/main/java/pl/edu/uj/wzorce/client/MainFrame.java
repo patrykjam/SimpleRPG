@@ -1,7 +1,5 @@
 package pl.edu.uj.wzorce.client;
 
-import pl.edu.uj.wzorce.client.Field;
-
 import javax.swing.*;
 import java.awt.*;
 
