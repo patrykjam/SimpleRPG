@@ -26,5 +26,9 @@ public interface Player {
 
     int getId();
 
+    void addHP(int val);
+
+    void addMP(int val);
+
     void setId(int id);
 }

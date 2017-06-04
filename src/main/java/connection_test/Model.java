@@ -1,11 +1,9 @@
 package connection_test;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import pl.edu.uj.wzorce.FIELD_TYPE;
-import pl.edu.uj.wzorce.Field;
-import pl.edu.uj.wzorce.MainFrame;
-import pl.edu.uj.wzorce.Player;
+import pl.edu.uj.wzorce.*;
 
 public class Model {
 
@@ -56,7 +54,17 @@ public class Model {
         }
     }
 
+    private void removeAll(){
+        for (int i = 0; i < fields.length; i++) {
+            for (int j = 0; j < fields.length; j++) {
+                fields[i][j].removeAll();
+                fields[i][j].removeMonsterAndItems();
+            }
+        }
+    }
+
     public void moveUp() {
+        removeAll();
         setPlayerWithDirection(player, "up");
         for (int i = fields.length - 1; i > 0; i--) {
             for (int j = 0; j < fields.length; j++) {
@@ -73,6 +81,7 @@ public class Model {
     }
 
     public void moveLeft() {
+        removeAll();
         setPlayerWithDirection(player, "left");
         for (int i = 0; i < fields.length; i++) {
             for (int j = fields.length - 1; j > 0; j--) {
@@ -93,6 +102,8 @@ public class Model {
     }
 
     public void moveRight() {
+        removeAll();
+
         setPlayerWithDirection(player, "right");
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields.length - 1; j++) {
@@ -109,6 +120,8 @@ public class Model {
     }
 
     public void moveDown() {
+        removeAll();
+
         setPlayerWithDirection(player, "down");
         for (int i = 0; i < fields.length - 1; i++) {
             for (int j = 0; j < fields.length; j++) {
@@ -159,6 +172,8 @@ public class Model {
                                 fields[i][j].setFieldType(FIELD_TYPE.WATER);
                                 break;
                         }
+//                        JSONArray monsters = fieldInfo.getJSONArray("monsters");
+//                        JSONArray items = fieldInfo.getJSONArray("monsters");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

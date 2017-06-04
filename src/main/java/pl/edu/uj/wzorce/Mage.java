@@ -8,9 +8,7 @@ public class Mage implements Player {
     private int CURRENT_MP;
     private int ATK;
     private final String PLAYER_CLASS = "mage";
-    int X_Axis;
-    int Y_Axis;
-    int player_id = -1;
+    private int player_id = -1;
 
     public Mage(int maxhp, int currhp, int maxmp, int currmp, int atk) {
         MAX_HP = maxhp;
@@ -79,6 +77,24 @@ public class Mage implements Player {
     @Override
     public int getId() {
         return player_id;
+    }
+
+    @Override
+    public void addHP(int val) {
+        if(CURRENT_HP + val > MAX_HP){
+            CURRENT_HP = MAX_HP;
+        }
+        else
+            CURRENT_HP += val;
+    }
+
+    @Override
+    public void addMP(int val) {
+        if(CURRENT_MP + val > MAX_MP){
+            CURRENT_MP = MAX_MP;
+        }
+        else
+            CURRENT_MP += val;
     }
 
     @Override

@@ -12,16 +12,18 @@ import org.json.JSONObject;
 
 public class Fasade {
     public int login(JSONObject data) throws SQLException, JSONException {
-            ConnectionPool connectionPool = ConnectionPool.getInstance();
-            Connection connection = connectionPool.getConnection();
-            Statement stmt = connection.createStatement();
-            String sql = String.format("SELECT USER_ID,PASSWORD FROM users where LOGIN='%s'",data.getString("login"));
-            ResultSet rs = stmt.executeQuery(sql);
-            connectionPool.releaseConnection(connection);
-            if(!rs.next())return -1;
-            String pass = rs.getString("PASSWORD");
-            if(!pass.equals(data.getString("password"))){return -1;}
-            return rs.getInt("USER_ID");
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection = connectionPool.getConnection();
+        Statement stmt = connection.createStatement();
+        String sql = String.format("SELECT USER_ID,PASSWORD FROM users where LOGIN='%s'", data.getString("login"));
+        ResultSet rs = stmt.executeQuery(sql);
+        connectionPool.releaseConnection(connection);
+        if (!rs.next()) return -1;
+        String pass = rs.getString("PASSWORD");
+        if (!pass.equals(data.getString("password"))) {
+            return -1;
+        }
+        return rs.getInt("USER_ID");
     }
 
     public String getProffesion(int user_id) throws SQLException {
@@ -62,7 +64,7 @@ public class Fasade {
                 return;
         }
 
-        String sql = String.format("UPDATE users_positions SET X_Axis = X_Axis + '%s', Y_Axis = Y_Axis + '%s' WHERE user_id = '%s'",x, y, user_id);
+        String sql = String.format("UPDATE users_positions SET X_Axis = X_Axis + '%s', Y_Axis = Y_Axis + '%s' WHERE user_id = '%s'", x, y, user_id);
         stmt.executeUpdate(sql);
         connectionPool.releaseConnection(connection);
     }
@@ -77,6 +79,7 @@ public class Fasade {
         rs.next();
         return rs.getInt("X_Axis");
     }
+
     public int getYposition(int user_id) throws SQLException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection connection = connectionPool.getConnection();
@@ -93,32 +96,67 @@ public class Fasade {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection connection = connectionPool.getConnection();
         Statement stmt = connection.createStatement();
+        Statement stmt2 = connection.createStatement();
         JSONObject map = new JSONObject();
         String sql = String.format("SELECT X_Axis FROM users_positions where user_id='%s'", user_id);
         ResultSet rs = stmt.executeQuery(sql);
         rs.next();
-        int X =  rs.getInt("X_Axis");
+        int X = rs.getInt("X_Axis");
         sql = String.format("SELECT Y_Axis FROM users_positions where user_id='%s'", user_id);
         rs = stmt.executeQuery(sql);
         rs.next();
         int Y = rs.getInt("Y_Axis");
-        //SELECT * FROM rpg.map WHERE X_Axis BETWEEN 20 AND 30 AND Y_AXIS BETWEEN 25 AND 35;
+
+        sql = String
+                .format("SELECT * FROM users_stats WHERE user_id = %d",
+                        user_id);
+        rs = stmt.executeQuery(sql);
+        rs.next();
+
+        try {
+            map.accumulate("hp_current", rs.getInt("hp_current"));
+            map.accumulate("mp_current", rs.getInt("mp_current"));
+            map.accumulate("hp_max", rs.getInt("hp_max"));
+            map.accumulate("mp_max", rs.getInt("mp_max"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         sql = String
                 .format("SELECT * FROM map WHERE X_AXIS BETWEEN %d AND %d AND Y_AXIS BETWEEN %d AND %d",
-                X - 5, X + 5, Y - 5, Y + 5);
-        //TODO: dodac do sql ^^^ przedmioty i potwory, sql powinien być posortowany: najpierw lewe dolne pole, później pole na górze od lewego dolnego itd.
+                        X - 5, X + 5, Y - 5, Y + 5);
         rs = stmt.executeQuery(sql);
         int i = 0;
         try {
             while (rs.next()) {
-                System.out.println(rs.getString("type"));
                 JSONArray items = new JSONArray();
-                JSONArray monsters = new JSONArray();
+                int temp_x = rs.getInt("X_AXIS");
+                int temp_y = rs.getInt("Y_AXIS");
+                sql = String
+                        .format("SELECT * FROM monsters WHERE X_AXIS = %d AND Y_AXIS = %d",
+                                temp_x, temp_y);
+                ResultSet Temp_result_set = stmt2.executeQuery(sql);
+                JSONObject monster = new JSONObject();
+                if (Temp_result_set.next()) {
+                    monster.accumulate("name", Temp_result_set.getString("name"))
+                            .accumulate("hp", Temp_result_set.getInt("hp"));
+                }
+
+                sql = String
+                        .format("SELECT * FROM souls WHERE X_AXIS = %d AND Y_AXIS = %d",
+                                temp_x, temp_y);
+                Temp_result_set = stmt2.executeQuery(sql);
+                JSONObject item;
+                if (Temp_result_set.next()) {
+                    item = new JSONObject()
+                            .accumulate("name", Temp_result_set.getString("name"))
+                            .accumulate("size", Temp_result_set.getInt("size"));
+                    items.put(item);
+                }
                 JSONObject field = new JSONObject()
                         .accumulate("type", rs.getString("type"))
                         .accumulate("items", items)
-                        .accumulate("monsters", monsters);
-                // TODO: dodać dwa jsonArray(?) do field^: jeden z przedmiotami drugi z potworami
+                        .accumulate("monsters", monster);
                 map.accumulate(Integer.toString(i++), field);
             }
         } catch (JSONException e) {

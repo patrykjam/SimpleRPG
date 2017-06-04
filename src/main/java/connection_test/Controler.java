@@ -77,6 +77,11 @@ public class Controler {
                     player = new Mage(10, 10, 10, 10, 5); //TODO: dodać hp, mp, atk do db?
                     player.setId(JSONAnswer.getInt("player_id"));
                 }
+                if (JSONAnswer.getString("profession").equals("archer")) {
+                    player = new Archer(10, 10, 10, 10, 5); //TODO: dodać hp, mp, atk do db?
+                    player.setId(JSONAnswer.getInt("player_id"));
+                }
+
             } else {
                 System.out.println("Wrong credentials");
             }
