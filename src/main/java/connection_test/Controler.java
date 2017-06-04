@@ -120,6 +120,11 @@ public class Controler {
     }
 
     public void moveUp() {
+        try {
+            out.println(buildMoveJson("up"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         int fieldLen = model.getFields().length;
         FIELD_TYPE fieldType = model.getFields()[fieldLen / 2 - 1][fieldLen / 2].getFieldType();
         if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
@@ -127,6 +132,11 @@ public class Controler {
     }
 
     public void moveLeft() {
+        try {
+            out.println(buildMoveJson("left"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         int fieldLen = model.getFields().length;
         FIELD_TYPE fieldType = model.getFields()[fieldLen / 2][fieldLen / 2 - 1].getFieldType();
         if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
@@ -134,6 +144,11 @@ public class Controler {
     }
 
     public void moveRight() {
+        try {
+            out.println(buildMoveJson("right"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         int fieldLen = model.getFields().length;
         FIELD_TYPE fieldType = model.getFields()[fieldLen / 2][fieldLen / 2 + 1].getFieldType();
         if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
@@ -141,6 +156,11 @@ public class Controler {
     }
 
     public void moveDown() {
+        try {
+            out.println(buildMoveJson("down"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         int fieldLen = model.getFields().length;
         FIELD_TYPE fieldType = model.getFields()[fieldLen / 2 + 1][fieldLen / 2].getFieldType();
         if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
@@ -149,6 +169,12 @@ public class Controler {
 
     public void addPlayer(Player player) {
         model.setPlayer(player, "down");
+    }
+
+    private JSONObject buildMoveJson(String direction) throws JSONException {
+        return new JSONObject()
+                .accumulate("action", "move")
+                .accumulate("move", direction);
     }
 
 }
