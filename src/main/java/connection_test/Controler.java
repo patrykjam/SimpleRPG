@@ -18,14 +18,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Controler {
-    Model model;
-    View view;
-    Socket s;
-    BufferedReader input;
-    PrintWriter out;
-    boolean loggedIn = false;
-    Player player;
-    MapReceiver mapReceiver = new MapReceiver();
+    private Model model;
+    private View view;
+    private Socket s;
+    private BufferedReader input;
+    private PrintWriter out;
+    private boolean loggedIn = false;
+    private Player player;
+    private MapReceiver mapReceiver = new MapReceiver();
 
 
     public Controler() {
@@ -70,7 +70,6 @@ public class Controler {
             out.println(jsonObject.toString());
             String answer = input.readLine();
             JSONObject JSONAnswer = new JSONObject(answer);
-            System.out.println(answer);
             if (JSONAnswer.getBoolean("logged")) {
                 loggedIn = true;
                 if (JSONAnswer.getString("profession").equals("mage")) {

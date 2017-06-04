@@ -23,6 +23,7 @@ public class ServerResponder extends Thread {
     List<String> equipment = new ArrayList<String>();
     String proffesion = "";
     Fasade fasade = new Fasade();
+    Timer timer;
 
     public ServerResponder(Socket socket) {
         this.socket = socket;
@@ -58,7 +59,7 @@ public class ServerResponder extends Thread {
                         out.println(JSONResponse);
                         while (flag) {
                             if (User_id != -1) {
-                                Timer timer = new Timer();
+                                timer = new Timer();
                                 timer.schedule(new SenderTask(User_id, out), 0, 1000); //uruchomienie za 0s, a potem co 1s
                                 // ustawiamy wysyłanie refreshu mapy co sekundę
                                 flag = false;
@@ -71,7 +72,6 @@ public class ServerResponder extends Thread {
 
                 while(true){
                     String req = input.readLine();
-                    System.out.println(req);
                     JSONObject JSONReq = new JSONObject(req);
                     if(JSONReq.getString("action").equals("move")){
                         fasade.moveUser(User_id, JSONReq.getString("move"));
@@ -84,6 +84,7 @@ public class ServerResponder extends Thread {
                 socket.close();
             } catch (IOException e1) {
             }
+            timer.cancel();
         }
     }
 

@@ -157,7 +157,6 @@ public class Fasade {
                         .accumulate("type", rs.getString("type"))
                         .put("items", items)
                         .accumulate("monsters", monster);
-                System.out.println(field);
                 map.accumulate(Integer.toString(i++), field);
             }
         } catch (JSONException e) {
