@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
 public class Fasade {
-    public int login(JSONObject data) throws SQLException {
+    public int login(JSONObject data) throws SQLException, JSONException {
             ConnectionPool connectionPool = ConnectionPool.getInstance();
             Connection connection = connectionPool.getConnection();
             Statement stmt = connection.createStatement();

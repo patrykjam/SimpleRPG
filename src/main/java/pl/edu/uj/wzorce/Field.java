@@ -64,6 +64,10 @@ public class Field extends JPanel {
         } else
             this.clearImage();
 
-        //TODO: copy
+        //TODO: copy more?
+    }
+
+    public FIELD_TYPE getFieldType() {
+        return fieldType;
     }
 }

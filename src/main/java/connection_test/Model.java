@@ -9,10 +9,21 @@ public class Model {
     private Field[][] fields;
     private MainFrame mainFrame;
     private Player player;
-    int X_;
-    int Y_;
+    private int playerId;
 
     Model() {
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
     }
 
     public void setFields(Field[][] fields) {
@@ -43,6 +54,7 @@ public class Model {
     }
 
     public void moveUp() {
+        player.setY_Axis(player.getY_Axis() - 1);
         setPlayer(player, "up");
         for (int i = fields.length - 1; i > 0; i--) {
             for (int j = 0; j < fields.length; j++) {
@@ -63,6 +75,7 @@ public class Model {
     }
 
     public void moveLeft() {
+        player.setX_Axis(player.getX_Axis() - 1);
         setPlayer(player, "left");
         for (int i = 0; i < fields.length; i++) {
             for (int j = fields.length - 1; j > 0; j--) {
@@ -83,6 +96,7 @@ public class Model {
     }
 
     public void moveRight() {
+        player.setX_Axis(player.getX_Axis() + 1);
         setPlayer(player, "right");
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields.length - 1; j++) {
@@ -104,6 +118,7 @@ public class Model {
 
     public void moveDown() {
         setPlayer(player, "down");
+        player.setY_Axis(player.getY_Axis() + 1);
         for (int i = 0; i < fields.length - 1; i++) {
             for (int j = 0; j < fields.length; j++) {
                 fields[i][j].copyFrom(fields[i + 1][j]);

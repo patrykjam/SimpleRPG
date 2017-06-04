@@ -24,40 +24,57 @@ public class ServerResponder extends Thread {
     String proffesion = "";
     Fasade fasade = new Fasade();
 
-    public  ServerResponder(Socket socket){this.socket=socket;}
+    public ServerResponder(Socket socket) {
+        this.socket = socket;
+    }
+
     public void run() {
         try {
-            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out   = new PrintWriter(socket.getOutputStream(), true);
-
+            boolean logged = false;
             boolean flag = true;
 
-            while(flag) {
-                String question = input.readLine(); // pierwsza linia logowanie.
-                JSONObject jsonObject = new JSONObject(question);
-                User_id = fasade.login(jsonObject);
-                if(User_id != -1){
-                    proffesion = fasade.getProffesion(User_id);
-                    X_Asix = fasade.getXposition(User_id);
-                    Y_Asix = fasade.getYposition(User_id);
+            while(!logged) {
+                input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
 
-                    Timer timer = new Timer();
-                    timer.schedule(new SenderTask(User_id,out),0,1000 ); //uruchomienie za 0s, a potem co 1s
-                    // ustawiamy wysyłanie refreshu mapy co sekundę
-                    flag = false;
+                String request = input.readLine();
+                System.out.println(request);
+
+                JSONObject JSONRequest = new JSONObject(request);
+                String action = JSONRequest.getString("action");
+                if (action.equals("login")) {
+                    User_id = fasade.login(JSONRequest);
+                    if (User_id != -1) {
+                        proffesion = fasade.getProffesion(User_id);
+                        X_Asix = fasade.getXposition(User_id);
+                        Y_Asix = fasade.getYposition(User_id);
+                        JSONObject JSONResponse = new JSONObject()
+                                .accumulate("logged", true)
+                                .accumulate("x_axis", X_Asix)
+                                .accumulate("y_axis", Y_Asix)
+                                .accumulate("profession", proffesion)
+                                .accumulate("player_id", User_id);
+                        out.println(JSONResponse);
+                        logged = true;
+                        while (flag) {
+                            if (User_id != -1) {
+                                Timer timer = new Timer();
+                                timer.schedule(new SenderTask(User_id, out), 0, 1000); //uruchomienie za 0s, a potem co 1s
+                                // ustawiamy wysyłanie refreshu mapy co sekundę
+                                flag = false;
+                            }
+                        }
+                    } else {
+                        out.println(new JSONObject().accumulate("logged", false));
+                    }
                 }
-
             }
 
-
-            while (true) {
-
-                String question = input.readLine();
-                System.out.println(question);
-                out.println(question);
+        } catch (Exception e) {
+            try {
+                socket.close();
+            } catch (IOException e1) {
             }
-        }catch (Exception e){
-            try {socket.close();} catch (IOException e1) {}
         }
     }
 
