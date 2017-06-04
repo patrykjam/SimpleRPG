@@ -89,4 +89,12 @@ public class Mage implements Player {
     public void setId(int id) {
         player_id = id;
     }
+
+    @Override
+    public int dealDmg() {
+        if(CURRENT_MP<10)return 0;
+
+        addMP(-10);
+        return ATK;
+    }
 }

@@ -27,4 +27,6 @@ public interface Player {
     void addMP(int val);
 
     void setId(int id);
+
+    int dealDmg();
 }

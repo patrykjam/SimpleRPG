@@ -11,5 +11,7 @@ public interface Monster extends Cloneable {
 
     String getName();
 
+    void addHp(int hp);
+
     Object copy();
 }
