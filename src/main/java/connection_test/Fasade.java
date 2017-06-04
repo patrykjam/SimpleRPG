@@ -73,7 +73,7 @@ public class Fasade {
         int temp_x = rs.getInt("X_Axis");
         int temp_y = rs.getInt("Y_Axis");
 
-        sql = String.format("Select * potions where X_Axis = '%s' and Y_Axis = '%s'",temp_x,temp_y);
+        sql = String.format("Select * souls where X_Axis = '%s' and Y_Axis = '%s'",temp_x,temp_y);
         rs = stmt.executeQuery(sql);
         if(rs.next()){
             pickUpItem(user_id, rs.getString("name"),rs.getInt("size"),temp_x,temp_y);
@@ -86,12 +86,32 @@ public class Fasade {
 
     public void pickUpItem(int user_id, String name, int size, int x, int y) throws SQLException {
 
-        //
-//
-//        Connection connection = ConnectionPool.getInstance().getConnection();
-//        Statement stmt = connection.createStatement();
-//        String sql = String.format("Select * potions where X_Axis = '%s' and Y_Axis = '%s'",temp_x,temp_y);
-//        ResultSet rs = stmt.executeQuery(sql);
+
+
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection = connectionPool.getConnection();
+        Statement stmt = connection.createStatement();
+        String sql = String.format("Delete  from souls where X_Axis = '%s' and Y_Axis = '%s'",x,y);
+        stmt.executeUpdate(sql);
+
+        sql = String.format("Select from users_stats where user_id = '%s'",user_id);
+        ResultSet rs =  stmt.executeQuery(sql);
+        rs.next();
+        int hp_max = rs.getInt("hp_max");
+        int mp_max = rs.getInt("mp_max");
+        int hp_current = rs.getInt("hp_current");
+        int mp_current = rs.getInt("mp_current");
+
+        if(name == "mp")hp_current+=size;
+        else  mp_current+=size;
+
+        if(hp_current>hp_max)hp_current = hp_max;
+        if(mp_current>mp_max)mp_current = mp_max;
+
+        sql = String.format("UPDATE users_stats SET hp_current ='%s', mp_current = '%s' WHERE user_id = '%s'", hp_current, mp_current, user_id);
+        stmt.executeUpdate(sql);
+
+        connectionPool.releaseConnection(connection);
 
     }
 
