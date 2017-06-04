@@ -41,6 +41,11 @@ public class Griffin implements Monster {
     }
 
     @Override
+    public void addHp(int hp) {
+        CURRENT_HP+=hp;
+    }
+
+    @Override
     public Object copy(){
         try {
             return this.clone();

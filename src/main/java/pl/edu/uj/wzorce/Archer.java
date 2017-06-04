@@ -101,4 +101,9 @@ public class Archer implements Player {
     public void setId(int id) {
         player_id = id;
     }
+
+    @Override
+    public int dealDmg() {
+        return ATK;
+    }
 }

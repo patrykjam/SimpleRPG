@@ -8,6 +8,7 @@ import java.sql.Statement;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import pl.edu.uj.wzorce.*;
 
 
 public class Fasade {
@@ -79,9 +80,66 @@ public class Fasade {
             pickUpItem(user_id, rs.getString("name"),rs.getInt("size"),temp_x,temp_y);
         }
 
+        sql = String.format("Select * from monsters where X_Axis = %d and Y_Axis = %d",temp_x,temp_y);
+        rs = stmt.executeQuery(sql);
+        if(rs.next()){
+            Monster monster;
+            String name =  rs.getString("name");
+            if(name == "Ladybug")monster = new Ladybug(rs.getInt("hp"));
+            else monster = new Griffin(rs.getInt("hp"));
+            fight(user_id, monster, temp_x, temp_y);
+        }
+
 
 
         connectionPool.releaseConnection(connection);
+    }
+
+    public void fight(int user_id, Monster monster,int x, int y) throws SQLException {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection = connectionPool.getConnection();
+        Statement stmt = connection.createStatement();
+
+        String sql = String.format("Select * from users where user_id = %d",user_id);
+        ResultSet rs = stmt.executeQuery(sql);
+        rs.next();
+        String proffesion = rs.getString("proffesion");
+        Player player;
+
+        sql = String.format("Select * from users_stats where user_id = %d",user_id);
+        rs = stmt.executeQuery(sql);
+        rs.next();
+        int hp_current = rs.getInt("hp_current");
+        int hp_max = rs.getInt("hp_max");
+        int mp_current = rs.getInt("mp_current");
+        int mp_max = rs.getInt("mp_max");
+
+        if(proffesion == "mage")player = new Mage(hp_max,hp_current,mp_max,mp_current,20);
+        else player = new Archer(hp_max,hp_current,mp_max,mp_current,10);
+
+        while (player.getCURRENT_HP() > 0 && monster.getCurrHp()>0){
+                player.addHP(-monster.getAtkVal());
+                monster.addHp(-player.dealDmg());
+        }
+
+        if(monster.getCurrHp() <= 0){
+            sql = String.format("DELETE from monsters where X_Axis = %d and Y_Axis = %d", x, y);
+            stmt.executeUpdate(sql);
+
+            sql = String.format("UPDATE users_stats Set hp_max = hp_max+10, hp_current = %d, mp_current = %d where user_id = %d", player.getCURRENT_HP(), player.getCURRENT_MP(),user_id);
+            stmt.executeUpdate(sql);
+        }
+        if(player.getCURRENT_HP() <= 0 ){
+            sql = String.format("UPDATE users_stats Set hp_current = hp_max, mp_current = mp_max where user_id = %d", user_id);
+            stmt.executeUpdate(sql);
+
+            sql = String.format("UPDATE users_positions Set X_Axis = 6, Y_Axis = 6  where user_id = %d", user_id);
+            stmt.executeUpdate(sql);
+
+        }
+
+
+
     }
 
     public void pickUpItem(int user_id, String name, int size, int x, int y) throws SQLException {
@@ -203,7 +261,6 @@ public class Fasade {
                         .accumulate("type", rs.getString("type"))
                         .put("items", items)
                         .accumulate("monsters", monster);
-                System.out.println(field);
                 map.accumulate(Integer.toString(i++), field);
             }
         } catch (JSONException e) {
