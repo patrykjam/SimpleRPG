@@ -181,8 +181,9 @@ public class Fasade {
                 }
                 JSONObject field = new JSONObject()
                         .accumulate("type", rs.getString("type"))
-                        .accumulate("items", items)
+                        .put("items", items)
                         .accumulate("monsters", monster);
+                System.out.println(field);
                 map.accumulate(Integer.toString(i++), field);
             }
         } catch (JSONException e) {

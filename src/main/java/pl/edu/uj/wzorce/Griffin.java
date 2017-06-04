@@ -6,7 +6,7 @@ public class Griffin implements Monster {
     private int CURRENT_HP;
     private int ATK = 2;
 
-    Griffin(int hp){
+    public Griffin(int hp){
         MAX_HP = CURRENT_HP = hp;
     }
 

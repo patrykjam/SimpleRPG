@@ -172,8 +172,29 @@ public class Model {
                                 fields[i][j].setFieldType(FIELD_TYPE.WATER);
                                 break;
                         }
-//                        JSONArray monsters = fieldInfo.getJSONArray("monsters");
-//                        JSONArray items = fieldInfo.getJSONArray("monsters");
+                        JSONObject monsters = fieldInfo.getJSONObject("monsters");
+                        if(!monsters.isNull("name")){
+                            switch (monsters.getString("name")){
+                                case "Griffin":
+                                    fields[i][j].addMonster(new Griffin(monsters.getInt("hp")));
+                                    break;
+                                case "Ladybug":
+                                    fields[i][j].addMonster(new Ladybug(monsters.getInt("hp")));
+                                    break;
+                            }
+                        }
+                        JSONArray items = fieldInfo.getJSONArray("items");
+                        for (int k = 0; k < items.length(); k++) {
+                            JSONObject item = items.getJSONObject(k);
+                            switch (item.getString("name")){
+                                case "hp":
+                                    fields[i][j].addItem(new HPItem(item.getInt("size")));
+                                    break;
+                                case "mp":
+                                    fields[i][j].addItem(new MPItem(item.getInt("size")));
+                                    break;
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
