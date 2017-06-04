@@ -22,8 +22,7 @@ public class Field extends JPanel {
     }
 
     public void addMonster(Monster monster) {
-        if (monster != null)
-            this.monster = monster;
+        this.monster = monster;
         Image scaled = ImageCollection.getInstance()
                 .getImage("images/" + monster.getName() + ".png", size);
         ImageIcon image = new ImageIcon(scaled);
@@ -35,11 +34,18 @@ public class Field extends JPanel {
 
     public void addItem(Item item) {
         itemArrayList.add(item);
+        Image scaled = ImageCollection.getInstance()
+                .getImage("images/" + item.getName() + ".png", size);
+        ImageIcon image = new ImageIcon(scaled);
+        JLabel label = new JLabel(image);
+        setLayout(new BorderLayout());
+        add(label, BorderLayout.LINE_START);
+        repaint();
     }
 
     public void removeMonsterAndItems(){
         monster = null;
-        itemArrayList = null;
+        itemArrayList = new ArrayList<>();
     }
 
     public void setPlayer(Player player, String direction) {
