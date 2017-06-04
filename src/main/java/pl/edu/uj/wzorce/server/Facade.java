@@ -162,7 +162,7 @@ public class Facade {
         int hp_current = rs.getInt("hp_current");
         int mp_current = rs.getInt("mp_current");
 
-        if (name == "mp") mp_current += size;
+        if (name.equals("mp")) mp_current += size;
         else hp_current += size;
 
         if (hp_current > hp_max) hp_current = hp_max;
