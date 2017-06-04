@@ -86,6 +86,7 @@ public class Fasade {
 
     public void pickUpItem(int user_id, String name, int size, int x, int y) throws SQLException {
 
+        //
 //
 //        Connection connection = ConnectionPool.getInstance().getConnection();
 //        Statement stmt = connection.createStatement();
