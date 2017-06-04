@@ -13,6 +13,5 @@ public class Main {
         controler.addModel(model);
         controler.addView(view);
         controler.showView();
-//        controler.run();
     }
 }
