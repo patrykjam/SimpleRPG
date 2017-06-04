@@ -1,4 +1,4 @@
-package connection_test;
+package pl.edu.uj.wzorce.client;
 
 import java.io.IOException;
 

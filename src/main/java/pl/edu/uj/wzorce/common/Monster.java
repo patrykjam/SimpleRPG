@@ -1,11 +1,9 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.common;
 
 public interface Monster extends Cloneable {
     int getMaxHp();
 
     int getCurrHp();
-
-    boolean receiveDmg(int hp);
 
     int getAtkVal();
 

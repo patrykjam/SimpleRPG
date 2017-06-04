@@ -1,9 +1,11 @@
-package connection_test;
+package pl.edu.uj.wzorce.client;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import pl.edu.uj.wzorce.*;
+import pl.edu.uj.wzorce.common.Archer;
+import pl.edu.uj.wzorce.common.Mage;
+import pl.edu.uj.wzorce.common.Player;
 
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
@@ -73,11 +75,11 @@ public class Controller {
             if (JSONAnswer.getBoolean("logged")) {
                 loggedIn = true;
                 if (JSONAnswer.getString("profession").equals("mage")) {
-                    player = new Mage(10, 10, 10, 10);
+                    player = new Mage(10, 10, 10, 10, 5);
                     player.setId(JSONAnswer.getInt("player_id"));
                 }
                 if (JSONAnswer.getString("profession").equals("archer")) {
-                    player = new Archer(10, 10, 10, 10);
+                    player = new Archer(10, 10, 10, 10, 5);
                     player.setId(JSONAnswer.getInt("player_id"));
                 }
 
@@ -184,10 +186,10 @@ public class Controller {
     private class MapReceiver implements Runnable {
         @Override
         public void run() {
-            while(true){
+            while (true) {
                 try {
                     String s = input.readLine();
-                    if(model != null)
+                    if (model != null)
                         model.refreshMap(s);
                 } catch (IOException e) {
                     break;

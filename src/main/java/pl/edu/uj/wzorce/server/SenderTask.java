@@ -1,4 +1,4 @@
-package connection_test;
+package pl.edu.uj.wzorce.server;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;

@@ -1,9 +1,11 @@
-package connection_test;
+package pl.edu.uj.wzorce.client;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import pl.edu.uj.wzorce.*;
+import pl.edu.uj.wzorce.common.Griffin;
+import pl.edu.uj.wzorce.common.Ladybug;
+import pl.edu.uj.wzorce.common.Player;
 
 public class Model {
 

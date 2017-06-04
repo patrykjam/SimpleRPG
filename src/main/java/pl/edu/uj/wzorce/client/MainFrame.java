@@ -1,11 +1,13 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.client;
+
+import pl.edu.uj.wzorce.client.Field;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JPanel {
 
-    public MainFrame(Field[][] fields){
+    public MainFrame(Field[][] fields) {
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         for (int row = 0; row < fields.length; row++) {

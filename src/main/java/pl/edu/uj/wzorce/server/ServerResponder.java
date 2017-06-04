@@ -1,4 +1,4 @@
-package connection_test;
+package pl.edu.uj.wzorce.server;
 
 import org.json.JSONObject;
 
@@ -30,7 +30,7 @@ public class ServerResponder extends Thread {
             boolean logged = false;
             boolean flag = true;
 
-            while(!logged) {
+            while (!logged) {
                 input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
 
@@ -66,10 +66,10 @@ public class ServerResponder extends Thread {
                     }
                 }
 
-                while(true){
+                while (true) {
                     String req = input.readLine();
                     JSONObject JSONReq = new JSONObject(req);
-                    if(JSONReq.getString("action").equals("move")){
+                    if (JSONReq.getString("action").equals("move")) {
                         facade.moveUser(User_id, JSONReq.getString("move"));
                     }
                 }

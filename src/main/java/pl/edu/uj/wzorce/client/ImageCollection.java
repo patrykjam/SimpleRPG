@@ -1,4 +1,4 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.client;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

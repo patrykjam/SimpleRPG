@@ -1,5 +1,7 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.common;
 
+
+import pl.edu.uj.wzorce.common.Player;
 
 public class Archer implements Player {
     private int MAX_HP;
@@ -8,12 +10,14 @@ public class Archer implements Player {
     private int CURRENT_MP;
     private final String PLAYER_CLASS = "archer";
     private int player_id = -1;
+    private int ATK;
 
-    public Archer(int maxhp, int currhp, int maxmp, int currmp) {
+    public Archer(int maxhp, int currhp, int maxmp, int currmp, int atk) {
         MAX_HP = maxhp;
         CURRENT_HP = currhp;
         MAX_MP = maxmp;
         CURRENT_MP = currmp;
+        ATK = atk;
     }
 
 
@@ -69,19 +73,17 @@ public class Archer implements Player {
 
     @Override
     public void addHP(int val) {
-        if(CURRENT_HP + val > MAX_HP){
+        if (CURRENT_HP + val > MAX_HP) {
             CURRENT_HP = MAX_HP;
-        }
-        else
+        } else
             CURRENT_HP += val;
     }
 
     @Override
     public void addMP(int val) {
-        if(CURRENT_MP + val > MAX_MP){
+        if (CURRENT_MP + val > MAX_MP) {
             CURRENT_MP = MAX_MP;
-        }
-        else
+        } else
             CURRENT_MP += val;
     }
 

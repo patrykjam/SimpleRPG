@@ -1,9 +1,9 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.client;
 
 public enum FIELD_TYPE {
     SAND, GRASS, WATER, WALL;
 
-    public static String getPath(FIELD_TYPE fieldType){
+    public static String getPath(FIELD_TYPE fieldType) {
         switch (fieldType) {
             case SAND:
                 return "images/sand.jpg";

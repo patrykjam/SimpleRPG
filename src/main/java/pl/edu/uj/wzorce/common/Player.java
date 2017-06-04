@@ -1,4 +1,4 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.common;
 
 public interface Player {
 
