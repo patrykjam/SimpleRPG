@@ -105,6 +105,7 @@ public class Fasade {
         rs.next();
         String proffesion = rs.getString("proffesion");
         Player player;
+        System.out.println(proffesion);
 
         sql = String.format("Select * from users_stats where user_id = %d",user_id);
         rs = stmt.executeQuery(sql);
@@ -114,8 +115,10 @@ public class Fasade {
         int mp_current = rs.getInt("mp_current");
         int mp_max = rs.getInt("mp_max");
 
-        if(proffesion == "mage")player = new Mage(hp_max,hp_current,mp_max,mp_current,20);
+        if(proffesion.equals("mage"))player = new Mage(hp_max,hp_current,mp_max,mp_current,20);
         else player = new Archer(hp_max,hp_current,mp_max,mp_current,10);
+
+        System.out.println(player.getPLAYER_CLASS());
 
         while (player.getCURRENT_HP() > 0 && monster.getCurrHp()>0){
                 player.addHP(-monster.getAtkVal());
@@ -126,14 +129,16 @@ public class Fasade {
             sql = String.format("DELETE from monsters where X_Axis = %d and Y_Axis = %d", x, y);
             stmt.executeUpdate(sql);
 
+
+            System.out.println(player.getCURRENT_MP());
             sql = String.format("UPDATE users_stats Set hp_max = hp_max+10, hp_current = %d, mp_current = %d where user_id = %d", player.getCURRENT_HP(), player.getCURRENT_MP(),user_id);
             stmt.executeUpdate(sql);
         }
         if(player.getCURRENT_HP() <= 0 ){
-            sql = String.format("UPDATE users_stats Set hp_current = hp_max, mp_current = mp_max where user_id = %d", user_id);
+            sql = String.format("UPDATE users_stats Set hp_max = hp_max-10, hp_current = hp_max, mp_current = mp_max where user_id = %d", user_id);
             stmt.executeUpdate(sql);
 
-            sql = String.format("UPDATE users_positions Set X_Axis = 6, Y_Axis = 6  where user_id = %d", user_id);
+            sql = String.format("UPDATE users_positions Set X_Axis = 5, Y_Axis = 5  where user_id = %d", user_id);
             stmt.executeUpdate(sql);
 
         }
