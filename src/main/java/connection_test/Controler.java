@@ -65,6 +65,7 @@ public class Controler {
             out.println(jsonObject.toString());
             String answer = input.readLine();
             JSONObject JSONAnswer = new JSONObject(answer);
+            System.out.println(answer);
             if (JSONAnswer.getBoolean("logged")) {
                 loggedIn = true;
                 if (JSONAnswer.getString("profession").equals("mage")) {

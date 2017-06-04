@@ -40,10 +40,10 @@ public class Fasade {
         Statement stmt = connection.createStatement();
         int x;
         int y;
-        if(direction == "right"){x = 1; y = 0;}
-        else if(direction == "left"){x = -1; y = 0;}
-        else if(direction == "up"){x = 0; y = 1;}
-        else if(direction == "down"){x = 0; y = -1;}
+        if(direction.equals("right")){x = 1; y = 0;}
+        else if(direction.equals("left")){x = -1; y = 0;}
+        else if(direction.equals("up")){x = 0; y = 1;}
+        else if(direction.equals("down")){x = 0; y = -1;}
         else {return;}
 
         String sql = String.format("UPDATE users_positions SET X_Axis = X_Axis + '%s', Y_Axis = Y_Axis + '%s' WHERE user_id = '%s'",x, y, user_id);

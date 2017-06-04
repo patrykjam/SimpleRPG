@@ -68,6 +68,15 @@ public class ServerResponder extends Thread {
                         out.println(new JSONObject().accumulate("logged", false));
                     }
                 }
+
+                while(true){
+                    String req = input.readLine();
+                    System.out.println(req);
+                    JSONObject JSONReq = new JSONObject(req);
+                    if(JSONReq.getString("action").equals("move")){
+                        fasade.moveUser(User_id, JSONReq.getString("move"));
+                    }
+                }
             }
 
         } catch (Exception e) {
