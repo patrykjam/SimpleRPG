@@ -1,11 +1,9 @@
 package connection_test;
 
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Date;
+import java.io.IOException;
 
 public class Main {
+
 
     public static void main(String[] args) throws IOException {
         Model model = new Model();
@@ -14,6 +12,7 @@ public class Main {
         view.addControler(controler);
         controler.addModel(model);
         controler.addView(view);
-        controler.run();
+        controler.showView();
+//        controler.run();
     }
 }

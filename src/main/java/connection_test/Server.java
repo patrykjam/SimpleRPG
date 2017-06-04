@@ -1,6 +1,5 @@
 package connection_test;
 
-import java.io.Externalizable;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,8 +9,9 @@ public class Server {
 
     public static void main(String[] args){
             ServerSocket listener = null;
-            
-            try {
+            ConnectionPool.getInstance();
+
+        try {
                 listener = new ServerSocket(9090);
                 while (true) {
                     Socket socket = listener.accept();

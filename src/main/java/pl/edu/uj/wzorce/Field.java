@@ -1,48 +1,48 @@
 package pl.edu.uj.wzorce;
 
-import javax.imageio.ImageIO;
+import com.sun.istack.internal.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 
-class Field extends JPanel {
+public class Field extends JPanel {
 
     private int size;
-    private BufferedImage bufferedImage = null;
     private Image image;
+    private FIELD_TYPE fieldType;
+    private JLabel label;
 
 
-    Field(int size, Color color) {
+    public Field(int size, Color color) {
         this.size = size;
         setBackground(color);
     }
 
-    void setPlayer() {
-        URL resource = getClass().getClassLoader().getResource("images/stickman.png");
-        if(resource != null) {
-            Image scaled = new ImageIcon(resource).getImage()
-                    .getScaledInstance(size, size, Image.SCALE_SMOOTH);
-            ImageIcon image = new ImageIcon(scaled);
-            JLabel label = new JLabel(image);
-            setLayout(new BorderLayout());
-            add(label, BorderLayout.CENTER);
-        }
+    public void setPlayer(Player player, String direction) {
+        if(label != null)
+            remove(label);
+        Image scaled = ImageCollection.getInstance()
+                .getImage("images/" + player.getPLAYER_CLASS() + direction + ".png", size);
+        ImageIcon image = new ImageIcon(scaled);
+        label = new JLabel(image);
+        setLayout(new BorderLayout());
+        add(label, BorderLayout.CENTER);
+        repaint();
     }
 
 
-    void setBackgroundImage(String path) {
-        URL resource = getClass().getClassLoader().getResource(path);
-        if(resource != null) {
-            try {
-                bufferedImage = ImageIO.read(resource);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            image = bufferedImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-        }
+    public void setFieldType(FIELD_TYPE fieldType){
+        this.fieldType = fieldType;
+        setBackgroundImage(fieldType);
+    }
+
+    private void setBackgroundImage(@NotNull FIELD_TYPE fieldType) {
+        image = ImageCollection.getInstance().getImage(FIELD_TYPE.getPath(fieldType), size);
+    }
+
+    public void clearImage() {
+        fieldType = null;
+        image = null;
     }
 
     @Override
@@ -52,9 +52,22 @@ class Field extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        if(image != null)
+        if (image != null)
             g.drawImage(image, 0, 0, null);
         else
             super.paintComponent(g);
+    }
+
+    public void copyFrom(Field field) {
+        if (field.fieldType != null) {
+            this.setFieldType(field.fieldType);
+        } else
+            this.clearImage();
+
+        //TODO: copy more?
+    }
+
+    public FIELD_TYPE getFieldType() {
+        return fieldType;
     }
 }
