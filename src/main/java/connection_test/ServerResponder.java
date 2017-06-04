@@ -45,6 +45,7 @@ public class ServerResponder extends Thread {
                 if (action.equals("login")) {
                     User_id = fasade.login(JSONRequest);
                     if (User_id != -1) {
+                        logged = true;
                         proffesion = fasade.getProffesion(User_id);
                         X_Asix = fasade.getXposition(User_id);
                         Y_Asix = fasade.getYposition(User_id);
@@ -55,7 +56,6 @@ public class ServerResponder extends Thread {
                                 .accumulate("profession", proffesion)
                                 .accumulate("player_id", User_id);
                         out.println(JSONResponse);
-                        logged = true;
                         while (flag) {
                             if (User_id != -1) {
                                 Timer timer = new Timer();

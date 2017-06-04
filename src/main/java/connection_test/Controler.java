@@ -13,8 +13,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Controler {
     Model model;
@@ -24,6 +25,8 @@ public class Controler {
     PrintWriter out;
     boolean loggedIn = false;
     Player player;
+    MapReceiver mapReceiver = new MapReceiver();
+
 
     public Controler() {
         String serverAddress = "localhost";
@@ -36,6 +39,8 @@ public class Controler {
         while (!loggedIn) {
             login();
         }
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        executorService.execute(mapReceiver);
     }//Constructor
 
     public void addModel(Model model) {
@@ -70,8 +75,6 @@ public class Controler {
                 loggedIn = true;
                 if (JSONAnswer.getString("profession").equals("mage")) {
                     player = new Mage(10, 10, 10, 10, 5); //TODO: dodać hp, mp, atk do db?
-                    player.setX_Axis(JSONAnswer.getInt("x_axis"));
-                    player.setY_Axis(JSONAnswer.getInt("y_axis"));
                     player.setId(JSONAnswer.getInt("player_id"));
                 }
             } else {
@@ -79,7 +82,6 @@ public class Controler {
             }
         } catch (IOException | JSONException e) {
         }
-
     }
 
 
@@ -89,13 +91,6 @@ public class Controler {
             for (int j = 0; j < dimension; j++) {
 
                 fields[i][j] = new Field(fieldSize, Color.WHITE);
-                Random random = new Random();
-                if (random.nextBoolean()) {
-                    fields[i][j].setFieldType(FIELD_TYPE.GRASS);
-                } else {
-                    fields[i][j].setFieldType(FIELD_TYPE.WATER);
-                }
-
                 Border border;
                 if (i < dimension - 1) {
                     if (j < dimension - 1) {
@@ -121,55 +116,59 @@ public class Controler {
     }
 
     public void moveUp() {
-        try {
-            out.println(buildMoveJson("up"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         int fieldLen = model.getFields().length;
         FIELD_TYPE fieldType = model.getFields()[fieldLen / 2 - 1][fieldLen / 2].getFieldType();
-        if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
+        if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER) {
             model.moveUp();
+            try {
+                out.println(buildMoveJson("up"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void moveLeft() {
-        try {
-            out.println(buildMoveJson("left"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         int fieldLen = model.getFields().length;
         FIELD_TYPE fieldType = model.getFields()[fieldLen / 2][fieldLen / 2 - 1].getFieldType();
-        if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
+        if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER) {
             model.moveLeft();
+            try {
+                out.println(buildMoveJson("left"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void moveRight() {
-        try {
-            out.println(buildMoveJson("right"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         int fieldLen = model.getFields().length;
         FIELD_TYPE fieldType = model.getFields()[fieldLen / 2][fieldLen / 2 + 1].getFieldType();
-        if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
+        if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER) {
             model.moveRight();
+            try {
+                out.println(buildMoveJson("right"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void moveDown() {
-        try {
-            out.println(buildMoveJson("down"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         int fieldLen = model.getFields().length;
         FIELD_TYPE fieldType = model.getFields()[fieldLen / 2 + 1][fieldLen / 2].getFieldType();
-        if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
+        if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER) {
             model.moveDown();
+            try {
+                out.println(buildMoveJson("down"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void addPlayer(Player player) {
-        model.setPlayer(player, "down");
+        model.setPlayerWithDirection(player, "down");
     }
 
     private JSONObject buildMoveJson(String direction) throws JSONException {
@@ -178,4 +177,18 @@ public class Controler {
                 .accumulate("move", direction);
     }
 
+    private class MapReceiver implements Runnable {
+        @Override
+        public void run() {
+            while(true){
+                try {
+                    String s = input.readLine();
+                    if(model != null)
+                        model.refreshMap(s);
+                } catch (IOException e) {
+                    break;
+                }
+            }
+        }
+    }
 }

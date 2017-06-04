@@ -24,14 +24,6 @@ public interface Player {
 
     void setATK(int ATK);
 
-    int getX_Axis();
-
-    void setX_Axis(int x);
-
-    int getY_Axis();
-
-    void setY_Axis(int y);
-
     int getId();
 
     void setId(int id);

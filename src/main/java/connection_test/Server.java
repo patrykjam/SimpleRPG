@@ -1,10 +1,8 @@
 package connection_test;
 
-import java.io.Externalizable;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 
 
 public class Server {

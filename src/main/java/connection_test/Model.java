@@ -1,5 +1,8 @@
 package connection_test;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import pl.edu.uj.wzorce.FIELD_TYPE;
 import pl.edu.uj.wzorce.Field;
 import pl.edu.uj.wzorce.MainFrame;
 import pl.edu.uj.wzorce.Player;
@@ -14,7 +17,7 @@ public class Model {
     Model() {
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayerWithDirection(Player player) {
         this.player = player;
     }
 
@@ -46,7 +49,7 @@ public class Model {
         return player;
     }
 
-    public void setPlayer(Player player, String direction) {
+    public void setPlayerWithDirection(Player player, String direction) {
         this.player = player;
         if (fields != null) {
             fields[fields.length / 2][fields.length / 2].setPlayer(player, direction);
@@ -54,8 +57,7 @@ public class Model {
     }
 
     public void moveUp() {
-        player.setY_Axis(player.getY_Axis() - 1);
-        setPlayer(player, "up");
+        setPlayerWithDirection(player, "up");
         for (int i = fields.length - 1; i > 0; i--) {
             for (int j = 0; j < fields.length; j++) {
                 fields[i][j].copyFrom(fields[i - 1][j]);
@@ -66,17 +68,12 @@ public class Model {
             fields[0][i].clearImage();
         }
 
-        for (int i = 0; i < fields.length; i++) {
-            for (int j = 0; j < fields.length; j++) {
-                fields[i][j].revalidate();
-                fields[i][j].repaint();
-            }
-        }
+        repaintMap();
+
     }
 
     public void moveLeft() {
-        player.setX_Axis(player.getX_Axis() - 1);
-        setPlayer(player, "left");
+        setPlayerWithDirection(player, "left");
         for (int i = 0; i < fields.length; i++) {
             for (int j = fields.length - 1; j > 0; j--) {
                 fields[i][j].copyFrom(fields[i][j - 1]);
@@ -96,8 +93,7 @@ public class Model {
     }
 
     public void moveRight() {
-        player.setX_Axis(player.getX_Axis() + 1);
-        setPlayer(player, "right");
+        setPlayerWithDirection(player, "right");
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields.length - 1; j++) {
                 fields[i][j].copyFrom(fields[i][j + 1]);
@@ -108,17 +104,12 @@ public class Model {
             fields[i][fields.length - 1].clearImage();
         }
 
-        for (int i = 0; i < fields.length; i++) {
-            for (int j = 0; j < fields.length; j++) {
-                fields[i][j].revalidate();
-                fields[i][j].repaint();
-            }
-        }
+        repaintMap();
+
     }
 
     public void moveDown() {
-        setPlayer(player, "down");
-        player.setY_Axis(player.getY_Axis() + 1);
+        setPlayerWithDirection(player, "down");
         for (int i = 0; i < fields.length - 1; i++) {
             for (int j = 0; j < fields.length; j++) {
                 fields[i][j].copyFrom(fields[i + 1][j]);
@@ -129,6 +120,10 @@ public class Model {
             fields[fields.length - 1][i].clearImage();
         }
 
+        repaintMap();
+    }
+
+    private void repaintMap() {
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields.length; j++) {
                 fields[i][j].revalidate();
@@ -137,7 +132,39 @@ public class Model {
         }
     }
 
-    public void refreshMap() {
-
+    public void refreshMap(String json) {
+        JSONObject map = null;
+        try {
+            map = new JSONObject(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        int f = 0;
+        for (int j = 0; j < fields.length; j++) {
+            for (int i = fields.length - 1; i >= 0; i--) {
+                try {
+                    if (map != null) {
+                        JSONObject fieldInfo = map.getJSONObject(Integer.toString(f++));
+                        switch (fieldInfo.getString("type")) {
+                            case "grass":
+                                fields[i][j].setFieldType(FIELD_TYPE.GRASS);
+                                break;
+                            case "sand":
+                                fields[i][j].setFieldType(FIELD_TYPE.SAND);
+                                break;
+                            case "wall":
+                                fields[i][j].setFieldType(FIELD_TYPE.WALL);
+                                break;
+                            case "water":
+                                fields[i][j].setFieldType(FIELD_TYPE.WATER);
+                                break;
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        repaintMap();
     }
 }

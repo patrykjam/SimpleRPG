@@ -77,26 +77,6 @@ public class Mage implements Player {
     }
 
     @Override
-    public int getX_Axis() {
-        return X_Axis;
-    }
-
-    @Override
-    public void setX_Axis(int x) {
-        X_Axis = x;
-    }
-
-    @Override
-    public int getY_Axis() {
-        return Y_Axis;
-    }
-
-    @Override
-    public void setY_Axis(int y) {
-        Y_Axis = y;
-    }
-
-    @Override
     public int getId() {
         return player_id;
     }
