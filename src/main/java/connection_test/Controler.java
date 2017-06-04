@@ -41,6 +41,7 @@ public class Controler {
     public void addModel(Model model) {
         this.model = model;
         initializeFields(11, 80);
+        addPlayer(player);
     }
 
     public void addView(View view) {
@@ -64,9 +65,9 @@ public class Controler {
             out.println(jsonObject.toString());
             String answer = input.readLine();
             JSONObject JSONAnswer = new JSONObject(answer);
-            if(JSONAnswer.getBoolean("logged")){
+            if (JSONAnswer.getBoolean("logged")) {
                 loggedIn = true;
-                if(JSONAnswer.getString("profession").equals("mage")){
+                if (JSONAnswer.getString("profession").equals("mage")) {
                     player = new Mage(10, 10, 10, 10, 5); //TODO: dodać hp, mp, atk do db?
                     player.setX_Axis(JSONAnswer.getInt("x_axis"));
                     player.setY_Axis(JSONAnswer.getInt("y_axis"));
@@ -119,33 +120,29 @@ public class Controler {
     }
 
     public void moveUp() {
-        int X = model.getPlayer().getX_Axis();
-        int Y = model.getPlayer().getY_Axis();
-        FIELD_TYPE fieldType = model.getFields()[X][Y - 1].getFieldType();
+        int fieldLen = model.getFields().length;
+        FIELD_TYPE fieldType = model.getFields()[fieldLen / 2 - 1][fieldLen / 2].getFieldType();
         if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
             model.moveUp();
     }
 
     public void moveLeft() {
-        int X = model.getPlayer().getX_Axis();
-        int Y = model.getPlayer().getY_Axis();
-        FIELD_TYPE fieldType = model.getFields()[X - 1][Y].getFieldType();
+        int fieldLen = model.getFields().length;
+        FIELD_TYPE fieldType = model.getFields()[fieldLen / 2][fieldLen / 2 - 1].getFieldType();
         if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
             model.moveLeft();
     }
 
     public void moveRight() {
-        int X = model.getPlayer().getX_Axis();
-        int Y = model.getPlayer().getY_Axis();
-        FIELD_TYPE fieldType = model.getFields()[X + 1][Y].getFieldType();
+        int fieldLen = model.getFields().length;
+        FIELD_TYPE fieldType = model.getFields()[fieldLen / 2][fieldLen / 2 + 1].getFieldType();
         if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
             model.moveRight();
     }
 
     public void moveDown() {
-        int X = model.getPlayer().getX_Axis();
-        int Y = model.getPlayer().getY_Axis();
-        FIELD_TYPE fieldType = model.getFields()[X][Y + 1].getFieldType();
+        int fieldLen = model.getFields().length;
+        FIELD_TYPE fieldType = model.getFields()[fieldLen / 2 + 1][fieldLen / 2].getFieldType();
         if (fieldType != FIELD_TYPE.WALL && fieldType != FIELD_TYPE.WATER)
             model.moveDown();
     }
