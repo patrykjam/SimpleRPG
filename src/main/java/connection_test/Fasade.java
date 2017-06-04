@@ -67,13 +67,13 @@ public class Fasade {
         String sql = String.format("UPDATE users_positions SET X_Axis = X_Axis + '%s', Y_Axis = Y_Axis + '%s' WHERE user_id = '%s'", x, y, user_id);
         stmt.executeUpdate(sql);
 
-        sql = String.format("Select X_Axis, Y_Axis  from users where user_id = '%s'",user_id);
+        sql = String.format("Select *  from users_positions where user_id = '%s'",user_id);
         ResultSet rs = stmt.executeQuery(sql);
         rs.next();
         int temp_x = rs.getInt("X_Axis");
         int temp_y = rs.getInt("Y_Axis");
 
-        sql = String.format("Select * souls where X_Axis = '%s' and Y_Axis = '%s'",temp_x,temp_y);
+        sql = String.format("Select * from souls where X_Axis = %d and Y_Axis = %d",temp_x,temp_y);
         rs = stmt.executeQuery(sql);
         if(rs.next()){
             pickUpItem(user_id, rs.getString("name"),rs.getInt("size"),temp_x,temp_y);
@@ -91,10 +91,10 @@ public class Fasade {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection connection = connectionPool.getConnection();
         Statement stmt = connection.createStatement();
-        String sql = String.format("Delete  from souls where X_Axis = '%s' and Y_Axis = '%s'",x,y);
+        String sql = String.format("Delete from souls where X_Axis = '%s' and Y_Axis = '%s'",x,y);
         stmt.executeUpdate(sql);
 
-        sql = String.format("Select from users_stats where user_id = '%s'",user_id);
+        sql = String.format("Select * from users_stats where user_id = '%s'",user_id);
         ResultSet rs =  stmt.executeQuery(sql);
         rs.next();
         int hp_max = rs.getInt("hp_max");
@@ -102,8 +102,8 @@ public class Fasade {
         int hp_current = rs.getInt("hp_current");
         int mp_current = rs.getInt("mp_current");
 
-        if(name == "mp")hp_current+=size;
-        else  mp_current+=size;
+        if(name == "mp")mp_current+=size;
+        else  hp_current+=size;
 
         if(hp_current>hp_max)hp_current = hp_max;
         if(mp_current>mp_max)mp_current = mp_max;
