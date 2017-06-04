@@ -15,7 +15,7 @@ public class Model {
     Model() {
     }
 
-    public void setPlayerWithDirection(Player player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 

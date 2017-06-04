@@ -17,7 +17,7 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Controler {
+public class Controller {
     private Model model;
     private View view;
     private Socket s;
@@ -25,10 +25,9 @@ public class Controler {
     private PrintWriter out;
     private boolean loggedIn = false;
     private Player player;
-    private MapReceiver mapReceiver = new MapReceiver();
 
 
-    public Controler() {
+    public Controller() {
         String serverAddress = "localhost";
         try {
             s = new Socket(serverAddress, 9090);
@@ -40,6 +39,7 @@ public class Controler {
             login();
         }
         ExecutorService executorService = Executors.newFixedThreadPool(1);
+        MapReceiver mapReceiver = new MapReceiver();
         executorService.execute(mapReceiver);
     }//Constructor
 
@@ -73,11 +73,11 @@ public class Controler {
             if (JSONAnswer.getBoolean("logged")) {
                 loggedIn = true;
                 if (JSONAnswer.getString("profession").equals("mage")) {
-                    player = new Mage(10, 10, 10, 10, 5); //TODO: dodać hp, mp, atk do db?
+                    player = new Mage(10, 10, 10, 10);
                     player.setId(JSONAnswer.getInt("player_id"));
                 }
                 if (JSONAnswer.getString("profession").equals("archer")) {
-                    player = new Archer(10, 10, 10, 10, 5); //TODO: dodać hp, mp, atk do db?
+                    player = new Archer(10, 10, 10, 10);
                     player.setId(JSONAnswer.getInt("player_id"));
                 }
 

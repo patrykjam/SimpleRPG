@@ -8,8 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class View extends JFrame implements KeyListener {
-    private Controler controler;
-    void addControler(Controler controler){this.controler = controler;}
+    private Controller controler;
+    void addControler(Controller controler){this.controler = controler;}
 
     View(){
 

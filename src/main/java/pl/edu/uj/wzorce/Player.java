@@ -20,10 +20,6 @@ public interface Player {
 
     void setCURRENT_MP(int CURRENT_MP);
 
-    int getATK();
-
-    void setATK(int ATK);
-
     int getId();
 
     void addHP(int val);

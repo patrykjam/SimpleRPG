@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class Fasade {
+public class Facade {
     public int login(JSONObject data) throws SQLException, JSONException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection connection = connectionPool.getConnection();
@@ -26,7 +26,7 @@ public class Fasade {
         return rs.getInt("USER_ID");
     }
 
-    public String getProffesion(int user_id) throws SQLException {
+    public String getProfession(int user_id) throws SQLException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection connection = connectionPool.getConnection();
         Statement stmt = connection.createStatement();

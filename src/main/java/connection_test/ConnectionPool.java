@@ -10,9 +10,9 @@ import java.util.*;
 
 public class ConnectionPool {
 
-    Vector<Connection> freeConnections = new Vector<Connection>();
-    Map<Connection,LocalDateTime> occupiedConnections = new HashMap<Connection,LocalDateTime>();
-    int connectionLiveTime = 3; // czas ważności połączenia w sekundach
+    private Vector<Connection> freeConnections = new Vector<>();
+    private Map<Connection,LocalDateTime> occupiedConnections = new HashMap<>();
+    private int connectionLiveTime = 3; // czas ważności połączenia w sekundach
     private static ConnectionPool instance = null;
     public synchronized static ConnectionPool getInstance() {
         if(instance == null) {
@@ -58,7 +58,7 @@ public class ConnectionPool {
     }
     public int getFreeConnectionNumber(){return freeConnections.size();}
 
-    protected ConnectionPool(){
+    private ConnectionPool(){
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
