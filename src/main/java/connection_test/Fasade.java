@@ -66,7 +66,32 @@ public class Fasade {
 
         String sql = String.format("UPDATE users_positions SET X_Axis = X_Axis + '%s', Y_Axis = Y_Axis + '%s' WHERE user_id = '%s'", x, y, user_id);
         stmt.executeUpdate(sql);
+
+        sql = String.format("Select X_Axis, Y_Axis  from users where user_id = '%s'",user_id);
+        ResultSet rs = stmt.executeQuery(sql);
+        rs.next();
+        int temp_x = rs.getInt("X_Axis");
+        int temp_y = rs.getInt("Y_Axis");
+
+        sql = String.format("Select * potions where X_Axis = '%s' and Y_Axis = '%s'",temp_x,temp_y);
+        rs = stmt.executeQuery(sql);
+        if(rs.next()){
+            pickUpItem(user_id, rs.getString("name"),rs.getInt("size"),temp_x,temp_y);
+        }
+
+
+
         connectionPool.releaseConnection(connection);
+    }
+
+    public void pickUpItem(int user_id, String name, int size, int x, int y) throws SQLException {
+
+//
+//        Connection connection = ConnectionPool.getInstance().getConnection();
+//        Statement stmt = connection.createStatement();
+//        String sql = String.format("Select * potions where X_Axis = '%s' and Y_Axis = '%s'",temp_x,temp_y);
+//        ResultSet rs = stmt.executeQuery(sql);
+
     }
 
     public int getXposition(int user_id) throws SQLException {
