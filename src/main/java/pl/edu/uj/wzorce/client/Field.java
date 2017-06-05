@@ -1,6 +1,8 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.client;
 
 import com.sun.istack.internal.NotNull;
+import pl.edu.uj.wzorce.common.Monster;
+import pl.edu.uj.wzorce.common.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +45,7 @@ public class Field extends JPanel {
         repaint();
     }
 
-    public void removeMonsterAndItems(){
+    public void removeMonsterAndItems() {
         monster = null;
         itemArrayList = new ArrayList<>();
     }

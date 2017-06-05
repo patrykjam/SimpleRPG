@@ -1,4 +1,4 @@
-package connection_test;
+package pl.edu.uj.wzorce.client;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Model model = new Model();
-        Controler controler = new Controler();
+        Controller controler = new Controller();
         View view = new View();
         view.addControler(controler);
         controler.addModel(model);

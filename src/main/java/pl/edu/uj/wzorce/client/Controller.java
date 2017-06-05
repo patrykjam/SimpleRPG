@@ -1,9 +1,11 @@
-package connection_test;
+package pl.edu.uj.wzorce.client;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import pl.edu.uj.wzorce.*;
+import pl.edu.uj.wzorce.common.Archer;
+import pl.edu.uj.wzorce.common.Mage;
+import pl.edu.uj.wzorce.common.Player;
 
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
@@ -17,18 +19,17 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Controler {
-    Model model;
-    View view;
-    Socket s;
-    BufferedReader input;
-    PrintWriter out;
-    boolean loggedIn = false;
-    Player player;
-    MapReceiver mapReceiver = new MapReceiver();
+public class Controller {
+    private Model model;
+    private View view;
+    private Socket s;
+    private BufferedReader input;
+    private PrintWriter out;
+    private boolean loggedIn = false;
+    private Player player;
 
 
-    public Controler() {
+    public Controller() {
         String serverAddress = "localhost";
         try {
             s = new Socket(serverAddress, 9090);
@@ -40,6 +41,7 @@ public class Controler {
             login();
         }
         ExecutorService executorService = Executors.newFixedThreadPool(1);
+        MapReceiver mapReceiver = new MapReceiver();
         executorService.execute(mapReceiver);
     }//Constructor
 
@@ -70,15 +72,14 @@ public class Controler {
             out.println(jsonObject.toString());
             String answer = input.readLine();
             JSONObject JSONAnswer = new JSONObject(answer);
-            System.out.println(answer);
             if (JSONAnswer.getBoolean("logged")) {
                 loggedIn = true;
                 if (JSONAnswer.getString("profession").equals("mage")) {
-                    player = new Mage(10, 10, 10, 10, 5); //TODO: dodać hp, mp, atk do db?
+                    player = new Mage(10, 10, 10, 10, 5);
                     player.setId(JSONAnswer.getInt("player_id"));
                 }
                 if (JSONAnswer.getString("profession").equals("archer")) {
-                    player = new Archer(10, 10, 10, 10, 5); //TODO: dodać hp, mp, atk do db?
+                    player = new Archer(10, 10, 10, 10, 5);
                     player.setId(JSONAnswer.getInt("player_id"));
                 }
 
@@ -185,10 +186,10 @@ public class Controler {
     private class MapReceiver implements Runnable {
         @Override
         public void run() {
-            while(true){
+            while (true) {
                 try {
                     String s = input.readLine();
-                    if(model != null)
+                    if (model != null)
                         model.refreshMap(s);
                 } catch (IOException e) {
                     break;

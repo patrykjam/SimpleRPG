@@ -1,4 +1,4 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.common;
 
 public interface Player {
 
@@ -19,10 +19,6 @@ public interface Player {
     int getCURRENT_MP();
 
     void setCURRENT_MP(int CURRENT_MP);
-
-    int getATK();
-
-    void setATK(int ATK);
 
     int getId();
 

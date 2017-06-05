@@ -1,15 +1,15 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.common;
 
-public class Griffin implements Monster {
+public class Ladybug implements Monster {
 
     private int MAX_HP;
     private int CURRENT_HP;
-    private int ATK = 2;
+    private int ATK = 1;
 
-    public Griffin(int hp){
+
+    public Ladybug(int hp) {
         MAX_HP = CURRENT_HP = hp;
     }
-
 
     @Override
     public int getMaxHp() {
@@ -22,31 +22,22 @@ public class Griffin implements Monster {
     }
 
     @Override
-    public boolean receiveDmg(int hp) {
-        CURRENT_HP -= hp;
-        return CURRENT_HP <= 0;
-    }
-
-    @Override
     public int getAtkVal() {
-        if(CURRENT_HP < (MAX_HP / 4)){
-            return ATK * 2;
-        }
         return ATK;
     }
 
     @Override
     public String getName() {
-        return "griffin";
+        return "ladybug";
     }
 
     @Override
     public void addHp(int hp) {
-        CURRENT_HP+=hp;
+        CURRENT_HP += hp;
     }
 
     @Override
-    public Object copy(){
+    public Object copy() {
         try {
             return this.clone();
         } catch (CloneNotSupportedException e) {

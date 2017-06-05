@@ -1,4 +1,4 @@
-package pl.edu.uj.wzorce;
+package pl.edu.uj.wzorce.client;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ImageCollection {
-    public static ImageCollection instance;
+    private static ImageCollection instance;
     private static Map<String, Image> imageMap;
 
     private ImageCollection() {
     }
 
-    public static ImageCollection getInstance() {
+    static ImageCollection getInstance() {
         if (instance == null) {
             instance = new ImageCollection();
             imageMap = new HashMap<>();
@@ -23,7 +23,7 @@ public class ImageCollection {
         return instance;
     }
 
-    public Image getImage(String key, int size) {
+    Image getImage(String key, int size) {
         Image scaledInstance = null;
         if (imageMap.containsKey(key)) {
             return imageMap.get(key);

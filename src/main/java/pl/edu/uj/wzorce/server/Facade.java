@@ -1,17 +1,17 @@
-package connection_test;
+package pl.edu.uj.wzorce.server;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import pl.edu.uj.wzorce.common.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import pl.edu.uj.wzorce.*;
 
-
-public class Fasade {
+public class Facade {
     public int login(JSONObject data) throws SQLException, JSONException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection connection = connectionPool.getConnection();
@@ -27,7 +27,7 @@ public class Fasade {
         return rs.getInt("USER_ID");
     }
 
-    public String getProffesion(int user_id) throws SQLException {
+    public String getProfession(int user_id) throws SQLException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection connection = connectionPool.getConnection();
         Statement stmt = connection.createStatement();
@@ -68,46 +68,45 @@ public class Fasade {
         String sql = String.format("UPDATE users_positions SET X_Axis = X_Axis + '%s', Y_Axis = Y_Axis + '%s' WHERE user_id = '%s'", x, y, user_id);
         stmt.executeUpdate(sql);
 
-        sql = String.format("Select *  from users_positions where user_id = '%s'",user_id);
+        sql = String.format("Select *  from users_positions where user_id = '%s'", user_id);
         ResultSet rs = stmt.executeQuery(sql);
         rs.next();
         int temp_x = rs.getInt("X_Axis");
         int temp_y = rs.getInt("Y_Axis");
 
-        sql = String.format("Select * from souls where X_Axis = %d and Y_Axis = %d",temp_x,temp_y);
+        sql = String.format("Select * from souls where X_Axis = %d and Y_Axis = %d", temp_x, temp_y);
         rs = stmt.executeQuery(sql);
-        if(rs.next()){
-            pickUpItem(user_id, rs.getString("name"),rs.getInt("size"),temp_x,temp_y);
+        if (rs.next()) {
+            pickUpItem(user_id, rs.getString("name"), rs.getInt("size"), temp_x, temp_y);
         }
 
-        sql = String.format("Select * from monsters where X_Axis = %d and Y_Axis = %d",temp_x,temp_y);
+        sql = String.format("Select * from monsters where X_Axis = %d and Y_Axis = %d", temp_x, temp_y);
         rs = stmt.executeQuery(sql);
-        if(rs.next()){
+        if (rs.next()) {
             Monster monster;
-            String name =  rs.getString("name");
-            if(name == "Ladybug")monster = new Ladybug(rs.getInt("hp"));
+            String name = rs.getString("name");
+            if (name == "Ladybug") monster = new Ladybug(rs.getInt("hp"));
             else monster = new Griffin(rs.getInt("hp"));
             fight(user_id, monster, temp_x, temp_y);
         }
 
 
-
         connectionPool.releaseConnection(connection);
     }
 
-    public void fight(int user_id, Monster monster,int x, int y) throws SQLException {
+    public void fight(int user_id, Monster monster, int x, int y) throws SQLException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection connection = connectionPool.getConnection();
         Statement stmt = connection.createStatement();
 
-        String sql = String.format("Select * from users where user_id = %d",user_id);
+        String sql = String.format("Select * from users where user_id = %d", user_id);
         ResultSet rs = stmt.executeQuery(sql);
         rs.next();
         String proffesion = rs.getString("proffesion");
         Player player;
         System.out.println(proffesion);
 
-        sql = String.format("Select * from users_stats where user_id = %d",user_id);
+        sql = String.format("Select * from users_stats where user_id = %d", user_id);
         rs = stmt.executeQuery(sql);
         rs.next();
         int hp_current = rs.getInt("hp_current");
@@ -115,26 +114,26 @@ public class Fasade {
         int mp_current = rs.getInt("mp_current");
         int mp_max = rs.getInt("mp_max");
 
-        if(proffesion.equals("mage"))player = new Mage(hp_max,hp_current,mp_max,mp_current,20);
-        else player = new Archer(hp_max,hp_current,mp_max,mp_current,10);
+        if (proffesion.equals("mage")) player = new Mage(hp_max, hp_current, mp_max, mp_current, 20);
+        else player = new Archer(hp_max, hp_current, mp_max, mp_current, 10);
 
         System.out.println(player.getPLAYER_CLASS());
 
-        while (player.getCURRENT_HP() > 0 && monster.getCurrHp()>0){
-                player.addHP(-monster.getAtkVal());
-                monster.addHp(-player.dealDmg());
+        while (player.getCURRENT_HP() > 0 && monster.getCurrHp() > 0) {
+            player.addHP(-monster.getAtkVal());
+            monster.addHp(-player.dealDmg());
         }
 
-        if(monster.getCurrHp() <= 0){
+        if (monster.getCurrHp() <= 0) {
             sql = String.format("DELETE from monsters where X_Axis = %d and Y_Axis = %d", x, y);
             stmt.executeUpdate(sql);
 
 
             System.out.println(player.getCURRENT_MP());
-            sql = String.format("UPDATE users_stats Set hp_max = hp_max+10, hp_current = %d, mp_current = %d where user_id = %d", player.getCURRENT_HP(), player.getCURRENT_MP(),user_id);
+            sql = String.format("UPDATE users_stats Set hp_max = hp_max+10, hp_current = %d, mp_current = %d where user_id = %d", player.getCURRENT_HP(), player.getCURRENT_MP(), user_id);
             stmt.executeUpdate(sql);
         }
-        if(player.getCURRENT_HP() <= 0 ){
+        if (player.getCURRENT_HP() <= 0) {
             sql = String.format("UPDATE users_stats Set hp_max = hp_max-10, hp_current = hp_max, mp_current = mp_max where user_id = %d", user_id);
             stmt.executeUpdate(sql);
 
@@ -144,32 +143,30 @@ public class Fasade {
         }
 
 
-
     }
 
     public void pickUpItem(int user_id, String name, int size, int x, int y) throws SQLException {
 
 
-
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         Connection connection = connectionPool.getConnection();
         Statement stmt = connection.createStatement();
-        String sql = String.format("Delete from souls where X_Axis = '%s' and Y_Axis = '%s'",x,y);
+        String sql = String.format("Delete from souls where X_Axis = '%s' and Y_Axis = '%s'", x, y);
         stmt.executeUpdate(sql);
 
-        sql = String.format("Select * from users_stats where user_id = '%s'",user_id);
-        ResultSet rs =  stmt.executeQuery(sql);
+        sql = String.format("Select * from users_stats where user_id = '%s'", user_id);
+        ResultSet rs = stmt.executeQuery(sql);
         rs.next();
         int hp_max = rs.getInt("hp_max");
         int mp_max = rs.getInt("mp_max");
         int hp_current = rs.getInt("hp_current");
         int mp_current = rs.getInt("mp_current");
 
-        if(name == "mp")mp_current+=size;
-        else  hp_current+=size;
+        if (name.equals("mp")) mp_current += size;
+        else hp_current += size;
 
-        if(hp_current>hp_max)hp_current = hp_max;
-        if(mp_current>mp_max)mp_current = mp_max;
+        if (hp_current > hp_max) hp_current = hp_max;
+        if (mp_current > mp_max) mp_current = mp_max;
 
         sql = String.format("UPDATE users_stats SET hp_current ='%s', mp_current = '%s' WHERE user_id = '%s'", hp_current, mp_current, user_id);
         stmt.executeUpdate(sql);

@@ -1,21 +1,22 @@
-package connection_test;
+package pl.edu.uj.wzorce.client;
 
-
-import pl.edu.uj.wzorce.MainFrame;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class View extends JFrame implements KeyListener {
-    private Controler controler;
-    void addControler(Controler controler){this.controler = controler;}
+    private Controller controler;
 
-    View(){
+    void addControler(Controller controler) {
+        this.controler = controler;
+    }
+
+    View() {
 
     }
 
-    public void showFrame(MainFrame mainFrame){
+    public void showFrame(MainFrame mainFrame) {
         SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -44,7 +45,7 @@ public class View extends JFrame implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-        switch(keyEvent.getKeyChar()){
+        switch (keyEvent.getKeyChar()) {
             case 'w':
             case 'W':
                 controler.moveUp();
@@ -61,7 +62,7 @@ public class View extends JFrame implements KeyListener {
             case 'D':
                 controler.moveRight();
         }
-        switch(keyEvent.getKeyCode()){
+        switch (keyEvent.getKeyCode()) {
             case 37:
                 controler.moveLeft();
                 break;

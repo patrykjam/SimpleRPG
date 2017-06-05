@@ -36,7 +36,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>pl.edu.uj.wzorce.Main</mainClass>
+                            <mainClass>pl.edu.uj.wzorce.client.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

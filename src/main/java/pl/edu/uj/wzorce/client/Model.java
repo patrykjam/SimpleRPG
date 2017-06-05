@@ -1,9 +1,11 @@
-package connection_test;
+package pl.edu.uj.wzorce.client;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import pl.edu.uj.wzorce.*;
+import pl.edu.uj.wzorce.common.Griffin;
+import pl.edu.uj.wzorce.common.Ladybug;
+import pl.edu.uj.wzorce.common.Player;
 
 public class Model {
 
@@ -15,7 +17,7 @@ public class Model {
     Model() {
     }
 
-    public void setPlayerWithDirection(Player player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 
@@ -54,7 +56,7 @@ public class Model {
         }
     }
 
-    private void removeAll(){
+    private void removeAll() {
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields.length; j++) {
                 fields[i][j].removeAll();
@@ -173,8 +175,8 @@ public class Model {
                                 break;
                         }
                         JSONObject monsters = fieldInfo.getJSONObject("monsters");
-                        if(!monsters.isNull("name")){
-                            switch (monsters.getString("name")){
+                        if (!monsters.isNull("name")) {
+                            switch (monsters.getString("name")) {
                                 case "Griffin":
                                     fields[i][j].addMonster(new Griffin(monsters.getInt("hp")));
                                     break;
@@ -186,7 +188,7 @@ public class Model {
                         JSONArray items = fieldInfo.getJSONArray("items");
                         for (int k = 0; k < items.length(); k++) {
                             JSONObject item = items.getJSONObject(k);
-                            switch (item.getString("name")){
+                            switch (item.getString("name")) {
                                 case "hp":
                                     fields[i][j].addItem(new HPItem(item.getInt("size")));
                                     break;
@@ -200,6 +202,14 @@ public class Model {
                     e.printStackTrace();
                 }
             }
+        }
+        try {
+            player.setCURRENT_HP(map.getInt("hp_current"));
+            player.setMAX_HP(map.getInt("hp_max"));
+            player.setCURRENT_MP(map.getInt("mp_current"));
+            player.setMAX_MP(map.getInt("mp_max"));
+        } catch (JSONException e) {
+
         }
         repaintMap();
     }
