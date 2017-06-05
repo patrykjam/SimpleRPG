@@ -85,7 +85,7 @@ public class Facade {
         if (rs.next()) {
             Monster monster;
             String name = rs.getString("name");
-            if (name == "Ladybug") monster = new Ladybug(rs.getInt("hp"));
+            if (name.equals("Ladybug")) monster = new Ladybug(rs.getInt("hp"));
             else monster = new Griffin(rs.getInt("hp"));
             fight(user_id, monster, temp_x, temp_y);
         }
